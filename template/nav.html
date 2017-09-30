@@ -1,0 +1,1 @@
+<div ng-class="{'panel':nav.margin}"><div class="flex f_b nav" ng-class="{'panel':!nav.margin}"><a ng-repeat="n in nav.list" ng-href="{{n.href||nav.href(n,$index)}}" on="nav.on(n,$index)">{{n.txt||nav.txt(n,$index)}}</a></div></div>

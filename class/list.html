@@ -1,0 +1,12 @@
+<clist></clist>
+<div class="h_class panel" ng-show="list.length">
+	<div ng-repeat="s in list">
+		<a ng-href="class/{{s.id}}">
+			<img ng-src="{{s.imgurl}}">
+			<span>课程价格：￥{{s.cmoney}}</span>
+			<b>{{s.name}}</b>
+		</a>
+		<p><label class="btn" ng-click="pay(s.id)">加入购物车</label><label class="btn" ng-click="pay(s.id)">立即报名</label></p>
+	</div>
+</div>
+<page></page>

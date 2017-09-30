@@ -1,0 +1,57 @@
+<div class="no_class" ng-show="!vlist.length">
+	课程即将开始，请耐心等待……
+	<a href="class" class="btn f_b">查看其他班次</a>
+</div>
+<div ng-show="vlist.length" class="class">
+	<div class="video" id="vd1">
+		<video id="vo" ng-src="{{video}}" controls preload autoplay playsinline></video>
+		<div class="nav panel flex f_b">
+			<label ng-repeat="s in nlist" on="$parent.type==s.type" ng-click="$parent.type=s.type">{{s.name}}</label>
+		</div>
+	</div>
+	<div class="panel" ng-show="!type">
+		<h3 class="f_b b_t_f"><i class="ic-ondemand_video"></i> {{info.name | slice:16}}<b class="fr red">￥{{info.cmoney}}</b></h3>
+		<ul class="data">
+			<li ng-if="techers"><span class="fl">授课教师：</span>{{techers}}</li>
+			<li><span class="fl">课程特色：</span>{{info.content}}</li>
+		</ul>
+		<div ng-if="info.description" ng-bind-html="html(info.description)" class="content">
+		</div>
+	</div>
+	<ul class="olist" ng-show="type==1">
+		<li class="li" ng-repeat="g in vlist">
+			<label class="f_b" ng-click="info.index=info.index==$index?-1:$index">
+				<i class="icon {{info.index==$index?'i_minus blue':'i_plus gray'}}"></i>
+				{{g.name}}<span class="gray fr f_s">{{g.flist.length}} 课时</span>
+			</label>
+			<ol ng-if="g.flist.length" ng-show="info.index==$index">
+				<li ng-repeat="v in g.flist" class="li" on="v.id==vid" ng-if="v.name.indexOf('仅课件')" ng-click="getVideo(v)">
+					<i class="icon i_round"></i>{{v.name | slice:22}}
+					<i class="fr" ng-class="{'ic-pause':v.id==vid,'ic-play_arrow':(!v.is_free||info.buy)&&v.id!=vid,'ic-shopping_cart gray':(v.is_free&&!info.buy)&&v.id!=vid}"></i>
+				</li>
+			</ol>
+		</li>
+	</ul>
+	<div class="comment" ng-show="type==2">
+		<form class="panel" ng-submit="sub()" name="form" autocomplete="off">
+			<h3 class="f_b b_t_f">发表评价</h3>
+			<ul class="form">
+				<li><textarea class="txt" name="comment" ng-model="comment" required placeholder="请输入评价内容"></textarea></li>
+				<li class="flex">
+					<div>点击打分：<i class="ic-star" ng-repeat="i in stars" ng-click="$parent.star=i" ng-class="{'red':star>$index,'gray':star<i}"></i></div>
+					<button class="btn form_r" type="submit" ng-disabled="form.$invalid">发表评价</button>
+				</li>
+			</ul>
+		</form>
+		<div class="panel">
+			<h3 class="f_b b_t_f">评价列表 <span class="fr"><i class="ic-star red"></i><i class="ic-star red"></i><i class="ic-star red"></i><i class="ic-star red"></i><i class="ic-star gray"></i><span class="red"> 4.{{random}} 分</span></span></h3>
+			<ul class="plist">
+				<li class="li" ng-repeat="c in clist">
+					<img ng-src="{{c.logo||'<!--#echo var="wc1"-->images/avatar.png'}}" class="avatar">
+					<h4 class="gray f_s">{{c.nickname||'网友'}} <span class="fr">{{c.thistime}}</span></h4>
+					<p>{{c.content}}</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

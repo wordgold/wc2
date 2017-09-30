@@ -1,0 +1,18 @@
+<form class="panel auth" name="info" ng-submit="sub()" novalidate>
+	<ul class="form">
+		<li class="flex">
+			<label for="phone" class="form_i">手&ensp;机&ensp;号</label>
+			<input id="phone" type="text" class="txt" ng-model="user.info.phone" name="phone" disabled></li>
+		<li class="flex">
+			<label for="nickname" class="form_i"><big class="red">*</big>昵&emsp;&emsp;称</label>
+			<input id="nickname" type="text" class="txt" ng-model="user.info.nickname" name="nickname" required placeholder="请输入昵称"><span class="form_err" ng-show="info.nickname.$dirty&&info.nickname.$invalid">请输入昵称</span></li>
+		<li class="flex">
+			<label for="name" class="form_i"><big class="red">*</big>真实姓名</label>
+			<input id="name" type="text" class="txt" ng-model="user.info.name" name="name" required placeholder="请输入真实姓名"><span class="form_err" ng-show="info.name.$dirty&&info.name.$invalid">请输入真实姓名</span></li>
+		<li class="flex">
+			<label for="pid" class="form_i">所在地区</label>
+			<select id="pid" class="txt" name="pid" ng-model="user.info.province_id" ng-options="p.id as p.province_name for p in plist">
+			</select></li>
+		<li><button class="sub btn" type="submit" ng-disabled="info.$invalid">提交修改</button></li>
+	</ul>
+</form>

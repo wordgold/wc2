@@ -1,0 +1,78 @@
+<div id="swipe" class="swipe_b banner ng-init" ng-controller="banner">
+	<div class="swipe">
+		<a ng-href="{{i.linkdress}}" ng-repeat="i in list" class="fl img" style="background-image:url({{i.url}})"></a>
+	</div>
+	<p><i ng-repeat="i in list"></i></p>
+</div>
+<div class="panel f_b" ng-if="news">
+	<i class="icon i_sound"></i><a class="dark" ng-href="news/{{news.id}}">{{news.title|slice:18}}</a>
+</div>
+<div class="panel">
+	<h3 class="f_b">试题练习<a href="test" class="fr f_s">更多</a></h3>
+	<div class="h_zt flex">
+		<a ng-href="test/ChaptersAndSections"><img src="images/zt1.png">章节练习</a>
+		<a ng-href="test/AllReal"><img src="images/zt2.png">历年真题</a>
+		<a ng-href="test/AllSimul"><img src="images/zt3.png">模拟考试</a>
+	</div>
+</div>
+<div class="panel">
+	<h3 class="f_b">新闻动态<a href="news" class="fr f_s">更多</a></h3>
+	<div class="h_dt flex">
+		<a ng-href="news?type=6" style="background: #fa7070"><img src="images/dt1.png">地方资讯</a>
+		<a ng-href="news?type=3" style="background: #ffaf48"><img src="images/dt2.png">专题报道</a>
+		<a ng-href="news?type=7" style="background: #78b0ff"><img src="images/dt3.png">行业热点</a>
+		<a ng-href="news?type=4" style="background: #8e97e8"><img src="images/dt4.png">法律法规</a>
+	</div>
+</div>
+<div class="panel">
+	<h3 class="f_b">特训现场<a ng-href="picture" class="fr f_s">更多</a></h3>
+	<div class="h_pic" ng-controller="scene" data-rows="6">
+		<div id="h_pic1" class="s_box swipe_b">
+			<div class="swipe">
+				<a ng-repeat="p in plist" class="fl img" style="background-image:url({{p.imgurl}})"></a>
+			</div>
+			<label ng-click="next()"></label>
+			<label class="p_a_r" ng-click="prev()"></label>
+			<p><i ng-repeat="i in plist"></i></p>
+		</div>
+		<div class="h_pic_list pic_list flex">
+			<label class="s_box" ng-repeat="p in list" ng-click="play(p)"><img ng-src="{{p.slist[p.slist.length-1].imgurl}}"><span>{{year}}年<br>{{p.slist[p.slist.length-1].content|slice:9}}</span></label>
+		</div>
+	</div>
+</div>
+<div class="panel">
+	<h3 class="f_b">课程介绍<a href="class" class="fr f_s">更多</a></h3>
+	<div class="h_class" ng-controller="classList">
+		<div ng-repeat="s in list">
+			<a ng-href="class/{{s.id}}">
+				<img ng-src="{{s.imgurl}}">
+				<span>课程价格：￥{{s.cmoney}}</span>
+				<b>{{s.name}}</b>
+			</a>
+			<p><label class="btn" ng-click="pay(s.id)">加入购物车</label><label class="btn" ng-click="pay(s.id)">立即报名</label></p>
+		</div>
+	</div>
+</div>
+<div class="panel">
+	<h3 class="f_b">资料下载<a href="" class="fr f_s">更多</a></h3>
+	<div class="bdx list_a" ng-controller="download" data-rows="8">
+		<a ng-href="{{user.logined?s.url:user.loginURL}}" ng-repeat="s in list"><i class="icon i_download"></i>{{s.name|slice:20}}</a>
+	</div>
+</div>
+<div class="panel" style="padding-bottom: 366px">
+	<h3 class="f_b">授课名师<a href="teacher" class="fr f_s">更多</a></h3>
+	<div class="h_teacher">
+		<div id="swipe_h1">
+			<div class="swipe">
+				<div class="l_teacher fl" ng-repeat="s in ht_list">
+					<a href="teacher/{{s.id}}" class="s_box">
+						<img ng-src="{{s.logo}}">
+						<h5>— {{s.name}} —</h5>
+						<p>{{s.info | slice:36}}<br>主讲课程：{{s.course | slice:12}}</p>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<label class="goTop" ng-click="scrollTo(0)"></label>

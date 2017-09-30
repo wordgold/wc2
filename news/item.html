@@ -1,0 +1,11 @@
+<div class="panel">
+	<h2 class="f_b b_t_f"><b>{{info.title}}</b></h2>
+	<p class="gray">发布日期：{{info.thisdate}}</p>
+	<div class="bdx content">
+		<p class="n_intro" ng-if="info.intro"><b>编辑导语：</b>{{info.intro}}</p>
+		<img ng-src="{{info.pic_url}}" class="n_img">
+		<div ng-bind-html="html(info.content)"></div>
+	</div>
+	<p ng-if="hlist.id"><b>上一篇：</b><a class="dark" ng-href="news/{{hlist.id}}">{{hlist.title}}</a></p>
+	<p ng-if="qlist.id"><b>下一篇：</b><a class="dark" ng-href="news/{{qlist.id}}">{{qlist.title}}</a></p>
+</div>

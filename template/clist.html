@@ -1,0 +1,7 @@
+<div class="select panel f_b" ng-class="{'on':select}" ng-click="select=!select">
+	<i class="ic-expand_more fr" ng-class="{'on':select}"></i>
+	<div>
+		<a ng-href="{{href+'?type='+type}}" on="cid==0">科目不限</a>
+		<a ng-repeat="c in clist" ng-href="{{href+'?cid='+c.id+'&type='+type}}" on="cid==c.id">{{c.course_name}}</a>
+	</div>
+</div>

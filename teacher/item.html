@@ -1,0 +1,27 @@
+<div class="teacher_info panel">
+	<img src="{{info.logo}}" class="s_box">
+	<h2 class="f_b b_t_f tl_c">— {{info.name}} —</h2>
+	<h2 class="f_b"><b>主讲课程</b></h2>
+	<p>{{info.course}}</p>
+	<h2 class="f_b"><b>讲课风格</b></h2>
+	<p>{{info.fengge}}</p>
+	<h2 class="f_b"><b>个人简介</b></h2>
+	<p>{{info.info}}</p>
+	<h2 class="f_b"><b>所获荣誉</b></h2>
+	<p>{{info.content}}</p>
+</div>
+<div class="panel">
+	<h2 class="f_b">相关视频</h2>
+	<ul class="bdx odd_list" ng-show="list.length">
+		<li ng-repeat="s in list" ng-class="{'odd':$odd}">
+			{{s.course_name}}
+			<span class="green fr" ng-if="s.is_free==0">免费</span>
+			<span class="blue fr" ng-if="s.is_free==1">会员免费</span>
+			<span class="red fr" ng-if="s.is_free==2">收费</span>
+			<span class="gray fr">{{s.play_count}} 人观看</span>
+			<br>{{s.name}}
+			<a class="btn block" ng-repeat="x in s.grade" ng-href="class/{{x.gid}}?vid={{s.id}}">{{x.gname}}</a>
+		</li>
+	</ul>
+	<page></page>
+</div>

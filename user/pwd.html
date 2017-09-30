@@ -1,0 +1,14 @@
+<form class="panel auth" name="pwd" ng-submit="sub()" novalidate>
+	<ul class="form">
+		<li class="flex">
+			<label for="pw" class="form_i"><big class="red">*</big>旧&ensp;密&ensp;码</label>
+			<input id="pw" type="password" class="txt" ng-model="pw" name="pw" required placeholder="请输入旧密码"><span class="form_err" ng-show="pwd.pw.$dirty&&pwd.pw.$invalid">请输入旧密码</span></li>
+		<li class="flex">
+			<label for="npw" class="form_i"><big class="red">*</big>新&ensp;密&ensp;码</label>
+			<input id="npw" type="password" maxlength="18" ng-minlength="4" class="txt" ng-model="npw" name="npw" v-pwd required placeholder="4-18位（数字，字母，下划线）"><span class="form_err" ng-show="pwd.npw.$dirty&&pwd.npw.$invalid">请输入4-18位（数字，字母，下划线）</span></li>
+		<li class="flex">
+			<label for="rpw" class="form_i"><big class="red">*</big>确认密码</label>
+			<input id="rpw" type="password" class="txt" v-confirm="npw" required ng-model="rpw" name="rpw" placeholder="请再次输入密码"><span class="form_err" ng-show="pwd.rpw.$dirty&&pwd.rpw.$invalid">两次密码输入不一致</span></li>
+		<li><button class="sub btn" type="submit" ng-disabled="pwd.$invalid">提交修改</button></li>
+	</ul>
+</form>

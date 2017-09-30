@@ -1,0 +1,25 @@
+<div ng-controller="scene">
+	<div class="s_nav panel">
+		<a ng-repeat="y in ylist" ng-href="picture?year={{y.year}}" on="year==y.year">{{y.year}}</a>
+	</div>
+	<div class="panel pic_list scene flex" ng-show="list.length">
+		<label class="s_box" ng-repeat="s in list" ng-init="ls=s.slist[s.slist.length-1]" ng-click="play(s)">
+			<img ng-src="{{ls.imgurl}}">
+			<span class="h_b_s">{{year}}年-{{ls.content}}</span>
+			<p><i class="icon i_stime"></i>{{ls.open_time}}<br><i class="icon i_splace"></i>{{ls.place}}</p>
+		</label>
+	</div>
+	<page></page>
+	<div ng-show="plist.length" class="alert scene_alert">
+		<i class="ic-close alert_close" ng-click="close()"></i>
+		<h2 class="f_b b_t_f">{{year}}年-{{plist[0].content}}</h2>
+		<div id="h_pic1" class="s_box swipe_b">
+			<div class="swipe">
+				<a ng-repeat="p in plist" class="fl img" style="background-image:url({{p.imgurl}})"></a>
+			</div>
+			<label ng-click="next()"></label>
+			<label class="p_a_r" ng-click="prev()"></label>
+			<p><i ng-repeat="i in list"></i></p>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,16 @@
+<div class="panel">
+	<div class="nav flex f_b">
+		<a ng-repeat="s in nlist" ng-href="news?type={{s.type}}" on="type==s.type" ng-click="$parent.sNav=!$parent.sNav">{{s.name}}<i ng-show="clist.length&&type==s.type" class="ic-expand_more" ng-class="{'on':$parent.sNav}"></i></a>
+	</div>
+	<div class="s_nav" ng-show="sNav&&clist.length">
+		<a ng-href="news?type={{type}}" on="sid==0">全部</a><a ng-repeat="s in clist" ng-href="news?type={{type}}&sid={{s.id}}" on="sid==s.id">{{s.title}}</a>
+	</div>
+</div>
+<div class="nlist panel" ng-show="list.length">
+	<a ng-href="news/{{s.id}}" ng-repeat="s in list">
+		<img ng-src="{{s.pic_url}}">
+		<h5>{{s.title}}</h5>
+		<span class="gray">{{s.thisdate}}</span>
+	</a>
+</div>
+<page></page>

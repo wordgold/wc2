@@ -1,0 +1,34 @@
+<div class="panel linear">
+	<div class="u_header">
+		<a ng-href="{{user.status=='login'?'/detail':user.url.login}}" class="img" style="background-image: url({{user.status=='login'?user.info.logo:'/images/avatar_man.png'}})"></a>
+		<div class="flex" ng-show="user.status!='login'">
+			<a ng-href="{{user.url.login}}" class="btn">登录</a><a ng-href="{{user.url.register}}" class="btn">注册</a>
+		</div>
+		<div class="tl_c" ng-show="user.status=='login'">
+			欢迎，{{user.info.nickname}}
+		</div>
+	</div>
+</div>
+<div class="u_body panel flex tl_c">
+	<a href="about/0"><img src="/images/user/u_h_0.png">公司介绍</a><hr class="s_hr">
+	<a href="teacher"><img src="/images/user/u_h_1.png">师资力量</a><hr class="s_hr">
+	<a href="picture"><img src="/images/user/u_h_2.png">特训现场</a>
+</div>
+<div class="u_footer">
+	<div class="panel" ng-show="user.status=='login'">
+		<a href=""><i class="linear"><img src="/images/user/u_b_0.png"></i>通知</a>
+		<a href=""><i class="linear"><img src="/images/user/u_b_1.png"></i>订单</a>
+		<a href=""><i class="linear"><img src="/images/user/u_b_2.png"></i>购物车</a>
+	</div>
+	<div class="panel" ng-show="user.status=='login'">
+		<a href="detail"><i class="linear"><img src="/images/user/u_b_3.png"></i>个人资料</a>
+		<a href="pwd"><i class="linear"><img src="/images/user/u_b_4.png"></i>修改密码</a>
+	</div>
+	<div class="panel">
+		<a href="help/0"><i class="linear"><img src="/images/user/u_b_5.png"></i>新手指南</a>
+		<a href="help/1"><i class="linear"><img src="/images/user/u_b_6.png"></i>支付方式</a>
+		<a href="help/2"><i class="linear"><img src="/images/user/u_b_7.png"></i>售后服务</a>
+		<a href="help/3"><i class="linear"><img src="/images/user/u_b_8.png"></i>服务条款</a>
+	</div>
+	<label ng-show="user.status=='login'" ng-click="user.out()" class="btn f_b linear">退出登录</label>
+</div>

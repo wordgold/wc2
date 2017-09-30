@@ -1,0 +1,37 @@
+<div class="panel auth">
+	<ul class="find_step flex">
+		<li ng-class="{'on':step>0}"><span>1</span></li>
+		<li ng-class="{'on':step>1}"><span>2</span></li>
+		<li ng-class="{'on':step>2}"><span>3</span></li>
+	</ul>
+	<form ng-show="step==1" ng-submit="sub1()" name="phone" novalidate autocomplete="off">
+		<ul class="form">
+			<li class="flex">
+				<label for="ph" class="form_i"><big class="red">*</big>手&ensp;机&ensp;号</label>
+				<input id="ph" type="text" class="txt" ng-model="ph" v-phone name="ph" required placeholder="请输入您注册的手机号码"><span class="form_err" ng-show="phone.ph.$dirty&&phone.ph.$invalid">请输入正确格式的手机号码</span></li>
+			<li class="flex">
+				<label for="code" class="form_i"><big class="red">*</big>图片验证</label>
+				<input id="imgcode" maxlength="4" ng-minlength="4" class="txt" ng-model="imgcode" name="imgcode" required placeholder="图片验证码"><label title="点击刷新验证码" ng-click="ran()"><img class="form_r" ng-src="http://m.zkjan.com/kstk-api/webuser/validateCode?{{r}}" alt="点击刷新验证码"></label><span class="form_err" ng-show="phone.imgcode.$dirty&&phone.imgcode.$invalid">请输入4位图片验证码</span></li>
+			<li class="flex">
+				<label for="code" class="form_i"><big class="red">*</big>短信验证</label>
+				<input id="code" maxlength="4" ng-minlength="4" class="txt" ng-model="code" name="code" required placeholder="短信验证码"><label class="btn form_r" ng-click="send(phone.ph.$modelValue)" ng-class="{'disabled':phone.ph.$invalid||phone.imgcode.$invalid||sended}">{{sended?'等待 '+s+' 秒':'发送短信'}}</label><span class="form_err" ng-show="phone.code.$dirty&&phone.code.$invalid">请输入4位短信验证码</span></li>
+			<li><button class="btn" type="submit" ng-disabled="phone.$invalid">提&emsp;&emsp;交</button></>
+		</ul>
+	</form>
+	<form ng-show="step==2" ng-submit="sub2()" name="pwd" novalidate autocomplete="off">
+		<ul class="form">
+			<li class="flex">
+				<label for="npw" class="form_i"><big class="red">*</big>密&emsp;&emsp;码</label>
+				<input id="npw" type="password" maxlength="18" ng-minlength="4" class="txt" ng-model="npw" name="npw" v-pwd required placeholder="4-18位（数字，字母，下划线）"><span class="form_err" ng-show="pwd.npw.$dirty&&pwd.npw.$invalid">请输入4-18位（数字，字母，下划线）</span></li>
+			<li class="flex">
+				<label for="rpw" class="form_i"><big class="red">*</big>确认密码</label>
+				<input id="rpw" type="password" class="txt" v-confirm="npw" required ng-model="rpw" name="rpw" placeholder="请再次输入密码"><span class="form_err" ng-show="pwd.rpw.$dirty&&pwd.rpw.$invalid">两次密码输入不一致</span></li>
+			<li><input type="hidden" name="key" ng-model="key"><button class="btn" type="submit" ng-disabled="pwd.$invalid">修改密码</button></li>
+		</ul>
+	</form>
+	<div ng-show="step==3" class="register_ok tl_c">
+		<img src="/images/form/ok.png">
+		<h2 class="b_t_f green">新密码设置成功！</h2>
+		<big class="red">{{oks}}</big> 秒后跳转至进入前<a ng-href="{{href}}">页面</a>
+	</div>
+</div>

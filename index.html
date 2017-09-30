@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta name="full-screen" content="yes"/>
+	<base href="/">
+	<link href="statics/i.css" rel="stylesheet" type="text/css"/>
+	<link href="statics/font.css" rel="stylesheet" type="text/css"/>
+	<script src="statics/angular.min.js"></script>
+	<script src="statics/swipe.min.js"></script>
+	<script src="statics/i.js"></script>
+	<meta name="keywords" content="中科建安（北京）教育科技有限公司,中科建安,中科建安教育网,注册安全工程师,注册安全工程师培训机构,安全工程师,安全工程师分专业,注册安全工程师讲师,注册安全工程师真题题,注册安全工程师考试时间,注册安全工程师报名时间,2017年注册安全工程师,注册安全工程师最新教材,安全生产法及相关法律知识,安全生产管理知识,安全生产技术,安全生产事故案例分析"/>
+	<meta name="description" content="中科建安（北京）教育科技有限公司，简称中科建安教育。中国执业资格考试培训领导品牌，是目前国内规模最大、最强师资阵容的注册安全工程师教育培训机构。"/>
+	<title>中科建安教育网-注册安全工程师权威培训机构</title>
+</head>
+<body ng-app="baseApp">
+<header ng-controller="header" class="f_b">
+	<h1 class="b_t_f">
+		<a href="/"><img src="images/logo.png" alt="中科建安教育网logo">中科建安教育网-注册安全工程师权威培训机构</a>
+	</h1>
+	<nav id="h_nav1"></nav>
+	<div class="user_t" ng-show="user.status!='login'"><a ng-href="{{user.url.login}}">登录</a>|<a ng-href="{{user.url.register}}">注册</a></div>
+	<div class="user_t" ng-show="user.status=='login'"><a ng-href="user"><img ng-src="{{user.info.logo||'/images/avatar_man.png'}}" class="icon i_avatar">{{user.info.nickname}}</a>|<a ng-click="user.out()">退出</a></div>
+	<div class="msg" ng-class="{'on':msg.str}"><span class="bg_{{msg.color}}"><i class="ic-notifications"></i> {{msg.str}}</span></div>
+	<div class="load" ng-show="load.status"></div>
+</header>
+<div ng-view class="main"></div>
+<footer>
+	<div class="footer_b tl_c"><a href="/">首页</a>|<a href="news">资讯</a>|<a href="class">课程</a>|<a href="test">题库</a>|<a href="study">学习</a>|<a href="user">我的</a></div>
+	<p><img src="images/footer/f1.png">企业Q Q：4006780681</p>
+	<p><img src="images/footer/f2.png">咨询热线：010-61705052</p>
+	<p><img src="images/footer/f3.png">电子邮箱：693868056@qq.com</p>
+	<p><img src="images/footer/f4.png">总部地址：北京市昌平区沙河镇青年创业大厦D1502室</p>
+	<div class="footer_d tl_c">版权所有 ©2005-2017 中科建安网校 All Rights Reserved</div>
+	<div class="tl_c">京ICP备16037467号-2</div>
+</footer>
+</body>
+</html>
+

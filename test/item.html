@@ -1,0 +1,73 @@
+<div ng-show="status.test=='start'">
+	<div class="panel flex test_info">
+		<h2 class="f_b b_t_f">{{info.title}}</h2>
+		<span>试卷类型：{{info.types}}</span>
+		<span>试卷题量：{{info.total}}</span>
+		<span>考试时长：{{info.times}} 分钟</span>
+		<span>及格/总分：{{info.qualified_point}}/{{info.all_point}}</span>
+	</div>
+	<div class="flex">
+		<label class="btn f_b blue" ng-click="start(false)">练习模式</label>
+		<label class="btn f_b red" ng-click="start(true)">计时开始</label>
+	</div>
+	<div class="panel">
+		<h2 class="f_b b_t_f"><i class="ic-local_library"></i> 试卷详情</h2>
+		<div ng-bind-html="html(info.info)"></div>
+	</div>
+</div>
+<div ng-show="status.test!='start'">
+	<div class="panel">
+		<h2 class="f_b b_t_f">{{ti | xyz}}. {{t.question_type_name}} <span class="fr gray">{{si+1}}/{{t.question.length}}</span></h2>
+		<div ng-bind-html="html(si+1+'. '+s.question)"></div>
+		<img ng-src="{{s.question_url}}" class="img" ng-if="s.question_url">
+	</div>
+	<label class="answer li" ng-repeat="a in s.options" ng-click="goVote(s,a.id)" ng-class="{'on':vote(s.checked,a.id,s.question_type_id),'submited':status.test=='submit','real':a.is_real}">
+		<span>{{$index | abc}}</span>
+		<p>{{a.answer}} <img ng-src="{{a.answer_url}}" class="img"></p>
+	</label>
+	<div ng-show="s.showA||status.test=='submit'" class="panel">
+		<h2 class="f_b b_t_f" ng-if="t.question_type_id<3">
+			参考答案：
+			<span class="green" ng-repeat="a in s.options" ng-if="a.is_real">{{$index | abc}}</span>
+			<span class="gray fr f_s">统计全平台正确率为 {{pen(s.answer_right,s.answer_num)}}</span>
+		</h2>
+		<div ng-if="s.analysis" ng-bind-html="html('<span>参考解析：</span>'+s.analysis)">
+		</div>
+	</div>
+	<div class="test_nav">
+		<label ng-click="prev()" ng-show="status.prev" class="fl"><i class="ic-navigate_before"></i></label>
+		<label ng-click="next()" ng-show="status.next" class="fr"><i class="ic-navigate_next"></i></label>
+		<div class="flex">
+			<label ng-if="status.fav" ng-click="changeFav(s)"><i class="ic-favorite{{s.colled?'':'_border'}}"></i> 收藏</label>
+			<label ng-if="status.ans" ng-click="s.showA=!s.showA"><i class="ic-info{{s.showA?'':'_outline'}}" info></i> 解析</label>
+			<label ng-if="status.time" ng-click="show()"><i class="ic-{{status.test=='submit'?'alarm_on':'pause'}}"></i> {{time}}</label>
+			<label ng-click="show()"><i class="ic-apps"></i> 答题卡</label>
+		</div>
+	</div>
+</div>
+<div ng-show="status.alert" class="alert">
+	<div ng-show="status.test!='end'">
+		<div class="card" ng-repeat="t in list">
+			<h2 class="f_b b_t_f">{{$index | xyz}}. {{t.question_type_name}}</h2>
+			<label ng-repeat="s in t.question" class="{{s.yesno}}" ng-class="{'on':s.checked,'submited':status.test=='submit'}" ng-click="go($parent.$index,$index)">{{$index+1}}</label>
+		</div>
+		<span class="i_score" ng-show="status.test=='submit'">{{score}}</span>
+		<div class="flex" ng-show="!ready&&status.test!='submit'">
+			<label class="ic_btn" ng-click="hide()"><i class="ic-play_arrow"></i>继续答题</label>
+			<label class="ic_btn" ng-click="ready=true"><i class="ic-done_all"></i>提交试卷</label>
+		</div>
+		<div class="flex" ng-show="ready&&status.test!='submit'">
+			<label class="ic_btn" ng-click="ready=false"><i class="ic-close"></i>取消提交</label>
+			<label class="ic_btn" ng-click="submit()"><i class="ic-done"></i>确认提交？</label>
+		</div>
+		<div class="flex" ng-show="status.test=='submit'">
+			<label class="ic_btn" ng-click="hide()"><i class="ic-close"></i>关闭答题卡</label>
+		</div>
+	</div>
+	<div ng-show="status.test=='end'">
+		<div class="ic_title" style="padding-top: 99px"><i class="ic-alarm_on"></i>考试时间已到</div>
+		<div class="flex">
+			<label class="ic_btn" ng-click="submit()"><i class="ic-done_all"></i>提交试卷</label>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,38 @@
+<nav></nav>
+<form ng-show="type=='login'" class="panel auth" name="lf" ng-submit="login()" novalidate>
+	<ul class="form">
+		<li><input type="text" class="txt login_ph" ng-model="ph" v-phone name="ph" placeholder="手机号"></li>
+		<li><input type="password" class="txt login_pw" ng-model="pw" name="pw" placeholder="密码"></li>
+		<li><label for="auto"><input type="checkbox" id="auto" ng-model="checked" ng-true-value="1" ng-false-value="0" name="checked">下次自动登录</label> <a ng-href="{{user.url.find+'&ph='+ph}}" class="fr">忘记密码?</a></li>
+		<li><button class="sub btn" type="submit">登&emsp;&emsp;录</button></li>
+		<p class="tl_c red">注：同一账号不允许同时登录多台设备。</p>
+	</ul>
+</form>
+<form ng-show="type=='register'" class="panel auth" name="rf" ng-submit="register()" novalidate autocomplete="off">
+	<ul class="form" ng-show="!ok">
+		<li class="flex">
+			<label for="ph" class="form_i"><big class="red">*</big>手&ensp;机&ensp;号</label>
+			<input id="ph" type="text" class="txt" ng-model="ph" v-phone name="ph" required placeholder="可通过该手机号找回密码"><span class="form_err" ng-show="rf.ph.$dirty&&rf.ph.$invalid">请输入正确格式的手机号码</span></li>
+		<li class="flex">
+			<label for="code" class="form_i"><big class="red">*</big>图片验证</label>
+			<input id="imgcode" maxlength="4" ng-minlength="4" class="txt" ng-model="imgcode" name="imgcode" required placeholder="图片验证码"><label title="点击刷新验证码" ng-click="ran()"><img class="form_r" ng-src="http://m.zkjan.com/kstk-api/webuser/validateCode?{{r}}" alt="点击刷新验证码"></label><span class="form_err" ng-show="rf.imgcode.$dirty&&rf.imgcode.$invalid">请输入4位图片验证码</span></li>
+		<li class="flex">
+			<label for="code" class="form_i"><big class="red">*</big>短信验证</label>
+			<input id="code" maxlength="4" ng-minlength="4" class="txt" ng-model="code" name="code" required placeholder="短信验证码"><label class="btn form_r" ng-click="send(rf.ph.$modelValue)" ng-class="{'disabled':rf.ph.$invalid||rf.imgcode.$invalid||sended}">{{sended?'等待 '+s+' 秒':'发送短信'}}</label><span class="form_err" ng-show="rf.code.$dirty&&rf.code.$invalid">请输入4位短信验证码</span></li>
+		<li class="flex">
+			<label for="pw" class="form_i"><big class="red">*</big>密&emsp;&emsp;码</label>
+			<input id="pw" type="password" maxlength="18" ng-minlength="4" class="txt" ng-model="pw" name="pw" v-pwd required placeholder="4-18位（数字，字母，下划线）"><span class="form_err" ng-show="rf.pw.$dirty&&rf.pw.$invalid">请输入4-18位（数字，字母，下划线）</span></li>
+		<li class="flex">
+			<label for="rpw" class="form_i"><big class="red">*</big>确认密码</label>
+			<input id="rpw" type="password" class="txt" v-confirm="pw" required ng-model="rpw" name="rpw" placeholder="请再次输入密码"><span class="form_err" ng-show="rf.rpw.$dirty&&rf.rpw.$invalid">两次密码输入不一致</span></li>
+		<li>
+			<label for="readed"><input type="checkbox" id="readed" required ng-model="readed" name="readed">我已阅读并同意<a href="help/3" target="_blank">《中科建安用户注册服务协议》</a></label></li>
+		<li><button class="btn" type="submit" ng-disabled="rf.$invalid">立即注册 </button></li>
+		<p class="tl_c"><a href="{{user.url.find+'&ph='+ph}}">忘记密码？</a></p>
+	</ul>
+	<div ng-show="ok" class="register_ok tl_c">
+		<img src="/images/form/ok.png">
+		<h2 class="b_t_f green">恭喜您，注册成功！</h2>
+		<big class="red">{{oks}}</big> 秒后跳转至注册前<a ng-href="{{href}}">页面</a>
+	</div>
+</form>
