@@ -1,0 +1,42 @@
+<nav></nav>
+<clist></clist>
+<div ng-if="type==0">
+	<ul class="olist qlist" ng-repeat="s in list">
+		<h3 class="qlist_h3"><i class="ic-ondemand_video"></i> {{s.name}}</h3>
+		<li class="li" ng-repeat="g in s.jdlist">
+			<label ng-click="show(g,s.id)">
+				<i class="icon {{g.show?'i_minus blue':'i_plus gray'}}"></i>
+				<b>第 {{$index | xyz}} 阶段：</b>观看视频
+			</label>
+			<ol ng-if="g.list" ng-show="g.show">
+				<li class="li" ng-repeat="f in g.list">
+					<i class="icon i_round"></i>{{f.name}}
+					<a ng-if="f.name.indexOf('仅课件')!=0" class="qlist_a" ng-href="class/{{f.gid}}?vid={{f.id}}&type=1"><i class="ic-play_arrow"></i></a>
+					<p><a ng-if="f.ppt_url" ng-href="{{f.ppt_url}}" target="_blank"><i class="ic-cloud_download"></i> 查看课件</a>
+					<span class="gray fr" ng-if="f.current_time">观看进度：<i class="i_bar"><u class="a" ng-style="{width:f.current_time/f.total_time*100+'%'}"></u></i></span>
+					</p>
+				</li>
+			</ol>
+		</li>
+	</ul>
+</div>
+<div ng-if="type!=0">
+	<ul class="olist qlist" ng-repeat="s in list">
+		<h3 class="qlist_h3"><i class="ic-apps"></i>{{s.name}}</h3>
+		<li class="li" ng-repeat="g in s.jdlist">
+			<label ng-click="show(g,s.id)">
+				<i class="icon {{g.show?'i_minus blue':'i_plus gray'}}"></i>
+				<b>第 {{$index | xyz}} 阶段：</b>练习试题
+			</label>
+			<ol ng-if="g.list" ng-show="g.show">
+				<li class="li" ng-repeat="e in g.list" ng-init="e.p=e.zdnums/e.yznums">
+					<i class="icon i_round"></i>{{e.title}}
+					<p ng-if="e.yznums"><span class="gray">答题进度：</span><i class="i_bar"><u ng-class="{'a':e.p>0.84,'b':e.p>0.69,'c':e.p>0.49}" ng-style="{width:e.yznums/e.nums*100+'%'}"></u></i></p>
+					<p ng-if="!e.yznums"><span class="gray">题量：{{e.nums}}</span></p>
+					<a class="qlist_a" ng-href="test/grade/{{e.id}}"><i class="ic-navigate_next"></i></a>
+				</li>
+			</ol>
+		</li>
+	</ul>
+</div>
+<none></none>

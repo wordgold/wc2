@@ -6,8 +6,8 @@
 	<meta name="format-detection" content="telephone=no"/>
 	<meta name="full-screen" content="yes"/>
 	<base href="/">
-	<link href="statics/i.css" rel="stylesheet" type="text/css"/>
-	<link href="statics/font.css" rel="stylesheet" type="text/css"/>
+	<link href="statics/i.css" rel="stylesheet">
+	<link href="statics/font.css" rel="stylesheet">
 	<script src="statics/angular.min.js"></script>
 	<script src="statics/swipe.min.js"></script>
 	<script src="statics/i.js"></script>
@@ -22,7 +22,7 @@
 	</h1>
 	<nav id="h_nav1"></nav>
 	<div class="user_t" ng-show="user.status!='login'"><a ng-href="{{user.url.login}}">登录</a>|<a ng-href="{{user.url.register}}">注册</a></div>
-	<div class="user_t" ng-show="user.status=='login'"><a ng-href="user"><img ng-src="{{user.info.logo||'/images/avatar_man.png'}}" class="icon i_avatar">{{user.info.nickname}}</a>|<a ng-click="user.out()">退出</a></div>
+	<div class="user_t" ng-show="user.status=='login'"><a href="user/car" ng-show="user.info.car"><i class="ic-shopping_cart"></i>{{user.info.car}}</a> <a ng-href="user" class="red"><img ng-src="{{user.info.logo||'/images/avatar_man.png'}}" class="icon i_avatar">{{user.unread||''}}</a></div>
 	<div class="msg" ng-class="{'on':msg.str}"><span class="bg_{{msg.color}}"><i class="ic-notifications"></i> {{msg.str}}</span></div>
 	<div class="load" ng-show="load.status"></div>
 </header>

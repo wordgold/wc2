@@ -1,0 +1,32 @@
+<nav qt="0,4" ng-if="fav"></nav>
+<nav qt="0,1,2,4" ng-if="!fav"></nav>
+<clist></clist>
+<div class="li qtnlist" ng-repeat="s in list">
+	<label ng-show="star&&s.colled" ng-click="delStar(s)"><i class="icon i_fav_h"></i></label>
+	<label ng-show="star&&!s.colled" ng-click="addStar(s)"><i class="icon i_fav"></i></label>
+	<label ng-if="!fav" ng-click="delStudy(s.qid)"><i class="icon i_trash"></i></label>
+	<div ng-click="show(s)" ng-bind-html="html(s.question)"></div>
+</div>
+<page></page>
+<div class="alert" ng-show="alert" style="padding: 0 0 120px 0">
+	<div class="panel">
+		<div ng-bind-html="html(si+1+'. '+s.question)"></div>
+		<img ng-src="{{s.question_url}}" class="img" ng-if="s.question_url">
+	</div>
+	<label class="answer li" ng-repeat="a in s.options" ng-class="{'on':vote(s.checked,a.id,s.question_type_id)}">
+		<span>{{$index | abc}}</span>
+		<p>{{a.answer}} <img ng-src="{{a.answer_url}}" class="img"></p>
+	</label>
+	<div class="panel">
+		<h2 class="f_b b_t_f">
+			参考答案：
+			<span class="green" ng-repeat="a in s.options" ng-if="a.is_real">{{$index | abc}}</span>
+			<span class="gray fr f_s">统计全平台正确率为 {{pen(s.answer_right,s.answer_num)}}</span>
+		</h2>
+		<div ng-if="s.analysis" ng-bind-html="html('<span>参考解析：</span>'+s.analysis)">
+		</div>
+	</div>
+	<div class="flex">
+		<label class="ic_btn" ng-click="alert=false"><i class="ic-close"></i>关闭</label>
+	</div>
+</div>

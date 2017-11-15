@@ -1,0 +1,20 @@
+<div class="h_class panel car" ng-show="list.length">
+	<div ng-repeat="s in list" ng-class="{'del':s.del,'check':s.check}">
+		<a ng-href="class/{{s.id}}">
+			<img ng-src="{{s.imgurl}}">
+			<span>课程价格：￥{{s.cmoney}}</span>
+			<b>{{s.name}}</b>
+		</a>
+		<p><i class="green" ng-class="{'ic-check_box_outline_blank':!s.check,'ic-check_box':s.check}" ng-click="check(s)"></i><i class="icon i_trash fr" ng-click="s.del=true"></i></p>
+		<li>
+			<label class="bg_red" ng-click="del(s,$index)">删除</label>
+			<label class="bg_blue" ng-click="s.del=false">取消</label>
+		</li>
+	</div>
+</div>
+<none></none>
+<div class="flex footerfix">
+	<label ng-click="checkAll()"><i class="green" ng-class="{'ic-check_box_outline_blank':checklength != list.length,'ic-check_box':checklength == list.length}"></i> 全选</label>
+	<span class="red">合计：<big>{{price||0 |currency:'￥'}}</big></span>
+	<label class="bg_green" ng-click="pay()">结算{{paying}}</label>
+</div>

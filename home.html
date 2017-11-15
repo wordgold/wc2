@@ -49,7 +49,7 @@
 				<span>课程价格：￥{{s.cmoney}}</span>
 				<b>{{s.name}}</b>
 			</a>
-			<p><label class="btn" ng-click="pay(s.id)">加入购物车</label><label class="btn" ng-click="pay(s.id)">立即报名</label></p>
+			<p><label class="btn" ng-click="user.buy(s)">{{s.status?'查看':'加入'}}购物车</label><label class="btn" ng-click="user.pay(s.id)">立即报名</label></p>
 		</div>
 	</div>
 </div>

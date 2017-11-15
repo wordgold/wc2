@@ -1,0 +1,13 @@
+<div class="panel">
+	<h2 class="f_b b_t_f tl_c">订单{{status?'支付成功！':'详情'}}</h2>
+		<p>订单编号：<b>{{no}}</b></p>
+		<p>订单状态：<b>{{status?'支付成功':'待支付'}}</b></p>
+		<p>应付金额：<b class="red">{{money|currency:'￥'}}</b></p>
+</div>
+<div class="panel tl_c" ng-hide="status">
+	<h2 class="f_b b_t_f">选择支付方式</h2>
+	<a href="{{alipay}}" ng-click="check=true" target="_blank" class="alipayBtn"></a>
+	<label class="wechatBtn" ng-click="showWechat=!showWechat;check=true" ng-class="{'on':showWechat}"></label>
+	<p ng-show="showWechat"><img ng-src="{{wechat}}"></p>
+	<p ng-show="check"><label ng-click="get()" class="btn f_b" style="width:240px">{{checkStr}}</label></p>
+</div>

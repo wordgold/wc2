@@ -1,5 +1,5 @@
 <nav></nav>
-<form ng-show="type=='login'" class="panel auth" name="lf" ng-submit="login()" novalidate>
+<form ng-show="type=='/login'" class="panel auth" name="lf" ng-submit="login()" novalidate>
 	<ul class="form">
 		<li><input type="text" class="txt login_ph" ng-model="ph" v-phone name="ph" placeholder="手机号"></li>
 		<li><input type="password" class="txt login_pw" ng-model="pw" name="pw" placeholder="密码"></li>
@@ -8,7 +8,7 @@
 		<p class="tl_c red">注：同一账号不允许同时登录多台设备。</p>
 	</ul>
 </form>
-<form ng-show="type=='register'" class="panel auth" name="rf" ng-submit="register()" novalidate autocomplete="off">
+<form ng-show="type=='/register'" class="panel auth" name="rf" ng-submit="register()" novalidate autocomplete="off">
 	<ul class="form" ng-show="!ok">
 		<li class="flex">
 			<label for="ph" class="form_i"><big class="red">*</big>手&ensp;机&ensp;号</label>

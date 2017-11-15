@@ -1,0 +1,22 @@
+<div ng-repeat="s in list">
+	<h3 class="qlist_h3"><i class="ic-ondemand_video"></i> {{s.major_name}}-{{s.glist?s.name:s.course_name}}</h3>
+	<div class="h_class panel">
+		<div ng-if="!s.glist||!s.glist.length">
+			<a ng-href="class/{{s.id}}">
+				<img ng-src="{{s.imgurl}}">
+				<span>课程价格：￥{{s.cmoney}}</span>
+				<b>{{s.name}}</b>
+				<p class="gray"><label class="tag" style="color:#ee638d">课时</label>{{s.vnums||0}}节<br><label class="tag">期限</label>{{s.able?'已过期':s.end_time}}</p>
+			</a>
+		</div>
+		<div ng-repeat="g in s.glist">
+			<a ng-href="class/{{g.id}}">
+				<img ng-src="{{g.imgurl}}">
+				<span>课程价格：￥{{g.cmoney}}</span>
+				<b>{{g.name}}</b>
+				<p class="gray"><label class="tag" style="color:#ee638d">课时</label>{{g.vnums||0}}节<br><label class="tag">期限</label>{{s.able?'已过期':s.end_time}}</p>
+			</a>
+		</div>
+	</div>
+</div>
+<none></none>

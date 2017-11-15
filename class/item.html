@@ -55,3 +55,7 @@
 		</div>
 	</div>
 </div>
+<div class="flex footerfix footerclass" ng-hide="info.buy">
+	<label ng-click="user.buy(info)" class="bg_red">{{info.status?'查看':'加入'}}购物车</label>
+	<label ng-click="user.pay(info.id)" class="bg_green">立即报名</label>
+</div>

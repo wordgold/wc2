@@ -1,4 +1,4 @@
-<nav class="b_t_f"></nav>
+<nav qt="0,1,2,3"></nav>
 <clist></clist>
 <ul class="olist qlist" ng-if="type==nav.list[0].type">
 	<li class="li" ng-repeat="c in list" ng-init="c.p=c.zdnums/c.yznums">
@@ -6,14 +6,14 @@
 			<i class="icon {{c.showL?'i_minus blue':'i_plus gray'}}"></i>{{c.chapter_name}}
 			<p class="gray" ng-if="c.yznums">答题进度：<i class="i_bar"><u ng-class="{'a':c.p>0.84,'b':c.p>0.69,'c':c.p>0.49}" ng-style="{width:pen(c.yznums,c.nums)}"></u></i>{{c.yznums||0}}/{{c.nums}}</p>
 			<p class="gray" ng-if="!c.yznums">题量：{{c.nums}}</p>
-			<a ng-if="c.nums" ng-href="test/{{type}}/{{c.id}}"><i class="ic-navigate_next"></i></a>
+			<a class="qlist_a" ng-if="c.nums" ng-href="test/{{type}}/{{c.id}}"><i class="ic-navigate_next"></i></a>
 		</label>
 		<ol ng-if="c.sublist.length" ng-show="c.showL">
 			<li class="li" ng-repeat="s in c.sublist" ng-init="s.p=s.zdnums/s.yznums">
 				<i class="icon i_round"></i>{{s.section_name}}
 				<p class="gray" ng-if="s.yznums">答题进度：<i class="i_bar"><u ng-class="{'a':s.p>0.84,'b':s.p>0.69,'c':s.p>0.49}" ng-style="{width:pen(s.yznums,s.nums)}"></u></i>{{s.yznums||0}}/{{s.nums}}</p>
 				<p class="gray" ng-if="!s.yznums">题量：{{s.nums}}</p>
-				<a ng-if="s.nums" ng-href="test/{{type}}/{{s.id}}"><i class="ic-navigate_next"></i></a>
+				<a class="qlist_a" ng-if="s.nums" ng-href="test/{{type}}/{{s.id}}"><i class="ic-navigate_next"></i></a>
 			</li>
 		</ol>
 	</li>
@@ -23,7 +23,7 @@
 		{{s.title}}
 		<p class="gray" ng-if="s.nums">题量：{{s.nums}} &nbsp; 时长：{{s.times}}分钟 &nbsp; {{s.write_num}}人参考</p>
 		<p class="gray" ng-if="!s.nums">每日作业({{date}})</p>
-		<a ng-href="test/{{type}}/{{s.id}}"><i class="ic-navigate_next"></i></a>
+		<a class="qlist_a" ng-href="test/{{type}}/{{s.id}}"><i class="ic-navigate_next"></i></a>
 	</li>
 </ul>
 <page></page>

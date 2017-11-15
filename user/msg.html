@@ -1,0 +1,14 @@
+<div ng-if="!info">
+	<a ng-repeat="n in user.news" ng-href="msg/{{n.id}}" class="li" ng-class="{'read':n.is_read}">
+		{{n.title}}<br>
+		<span class="gray f_s">{{n.create_time}}</span>
+	</a>
+	<page></page>
+</div>
+<div class="panel" ng-if="info">
+	<h2 class="f_b b_t_f"><b>{{info.title}}</b></h2>
+	<p class="gray">发布日期：{{info.create_time}}</p>
+	<div class="bdx content">
+		<div ng-bind-html="html(info.content)"></div>
+	</div>
+</div>

@@ -1,6 +1,6 @@
-"use strict";
-var service = "http://m.zkjan.com/kstk-api/",
-	ver = ".html?2",
+'use strict';
+var service = 'http://m.zkjan.com/kstk-api/',
+	ver = '.html?3',
 	base = angular.module('baseApp', ['ngRoute']).config(function($routeProvider, $locationProvider, $httpProvider) {
 		$routeProvider.when('/', {
 			templateUrl: 'home' + ver,
@@ -34,18 +34,42 @@ var service = "http://m.zkjan.com/kstk-api/",
 		}).when('/test/:type/:id', {
 			templateUrl: 'test/item' + ver,
 			controller: 'test'
-		}).when('/study', {
-			templateUrl: 'study/plan' + ver,
+		}).when('/user/plan', {
+			templateUrl: 'user/plan' + ver,
 			controller: 'plan'
+		}).when('/user/class', {
+			templateUrl: 'user/class' + ver,
+			controller: 'myClass'
+		}).when('/user/wrong', {
+			templateUrl: 'user/test' + ver,
+			controller: 'myTest'
+		}).when('/user/fav', {
+			templateUrl: 'user/test' + ver,
+			controller: 'myTest'
 		}).when('/user', {
 			templateUrl: 'user/index' + ver,
 			controller: 'mine'
-		}).when('/detail', {
+		}).when('/user/order', {
+			templateUrl: 'user/order' + ver,
+			controller: 'order'
+		}).when('/user/car', {
+			templateUrl: 'user/car' + ver,
+			controller: 'car'
+		}).when('/user/msg', {
+			templateUrl: 'user/msg' + ver,
+			controller: 'userNews'
+		}).when('/user/msg/:id', {
+			templateUrl: 'user/msg' + ver,
+			controller: 'userNews'
+		}).when('/user/detail', {
 			templateUrl: 'user/detail' + ver,
 			controller: 'detail'
-		}).when('/pwd', {
+		}).when('/user/pwd', {
 			templateUrl: 'user/pwd' + ver,
 			controller: 'pwd'
+		}).when('/pay/:id', {
+			templateUrl: 'user/pay' + ver,
+			controller: 'pay'
 		}).when('/login', {
 			templateUrl: 'user/auth' + ver,
 			controller: 'auth'
@@ -111,52 +135,59 @@ var service = "http://m.zkjan.com/kstk-api/",
 				}
 			};
 		});
-		$httpProvider.defaults.headers.post["Content-Type"] = 'application/x-www-form-urlencoded;charset=UTF-8';
+		$httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 	});
 base.value('QType', [{
-	type: "ChaptersAndSections",
-	get: "QuestionBySidFront",
-	update: "qerrdb",
-	star: 1,
-	txt: "章节练习"
+	type: 'ChaptersAndSections',
+	get: 'QuestionBySidFront',
+	update: 'qerrdb',
+	star: true,
+	id: 1,
+	txt: '章节练习'
 }, {
-	type: "AllReal",
-	get: "RealQuestion",
-	update: "realdb",
-	info: "RealOne",
-	txt: "历年真题"
+	type: 'AllReal',
+	get: 'RealQuestion',
+	update: 'realdb',
+	info: 'RealOne',
+	sid: true,
+	id: 3,
+	txt: '历年真题'
 }, {
-	type: "AllSimul",
-	get: "SimulQuestion",
-	update: "simuldb",
-	info: "SimulOne",
-	txt: "模拟考试"
+	type: 'AllSimul',
+	get: 'SimulQuestion',
+	update: 'simuldb',
+	info: 'SimulOne',
+	sid: true,
+	id: 2,
+	txt: '模拟考试'
 }, {
-	type: "DayQueston",
-	get: "QuestionByDay",
-	update: "qerrdb",
-	txt: "每日作业"
+	type: 'DayQueston',
+	get: 'QuestionByDay',
+	update: 'qerrdb',
+	txt: '每日作业'
 }, {
-	type: "grade",
-	get: "GradeQuestion",
-	update: "gradedb",
-	star: 4,
-	txt: "学习计划"
+	type: 'grade',
+	get: 'GradeQuestion',
+	update: 'gradedb',
+	star: true,
+	sid: true,
+	id: 4,
+	txt: '学习计划'
 }]).value('course', {}).value('event', {})
-base.filter("slice", function() {
+base.filter('slice', function() {
 	return function(s, l) {
-		return (s && s.length > l) ? s.slice(0, l - 1) + "..." : s;
+		return (s && s.length > l) ? s.slice(0, l - 1) + '...' : s;
 	}
-}).filter("abc", function() {
+}).filter('abc', function() {
 	return function(s) {
-		return ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"][s];
+		return ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'][s];
 	}
-}).filter("xyz", function() {
+}).filter('xyz', function() {
 	return function(s) {
-		return ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"][s];
+		return ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十'][s];
 	}
 })
-base.service("msg", function($timeout) {
+base.service('msg', function($timeout) {
 	var t = this,
 		time;
 	t.show = function(s, c) {
@@ -166,11 +197,11 @@ base.service("msg", function($timeout) {
 			$timeout.cancel(time);
 		}
 		time = $timeout(function() {
-			t.str = "";
+			t.str = '';
 			time = 0;
 		}, 2000)
 	}
-}).service("load", function() {
+}).service('load', function() {
 	var t = this;
 	t.length = 0;
 	t.status = false;
@@ -185,53 +216,85 @@ base.service("msg", function($timeout) {
 			t.status = false;
 		}
 	}
-}).service("user", function($http, $location, msg) {
-	var t = this;
-	t.bind = function(r){
+}).service('user', function($http, $location, msg) {
+	var t = this,
+		ti = 0,
+		getNews = function() {
+			$http.post(service + 'webuser/getNews').then(function(r) {
+				t.news = r.data.list;
+				t.unread = 0;
+				for (var i = t.news.length; i--;) {
+					if (!t.news[i].is_read) t.unread++;
+				}
+				ti = setTimeout(getNews, 99999)
+			});
+		}
+	t.bind = function(r) {
 		t.info = r.list;
 		t.info.car = r.carCount;
 		t.info.taocan = r.gmtc;
-		t.status = "login";
+		t.status = 'login';
+		clearTimeout(ti);
+		getNews();
 	}
 	t.check = function(func) {
 		if (t.status)
 			func && func();
 		else
-			$http.post(service + "webuser/checkCookies").then(function(r) {
+			$http.post(service + 'webuser/checkCookies').then(function(r) {
 				t.bind(r.data)
 				func && func();
 			}, function() {
-				t.status = "fail";
+				t.status = 'fail';
 				func && func();
 			});
 	}
 	t.judge = function(func) {
-		if (t.status == "login")
+		if (t.status == 'login')
 			func();
 		else
-			msg.show("请先登录")
+			msg.show('请先登录')
 	}
 	t.updateURL = function(h) {
 		t.url = {
 			from: h = encodeURIComponent(h),
-			login: "login?href=" + h,
-			register: "register?href=" + h,
-			find: "find?href=" + h
+			login: 'login?href=' + h,
+			register: 'register?href=' + h,
+			find: 'find?href=' + h
 		};
 	}
 	t.out = function() {
-		$http.post(service + "webuser/loginout");
+		$http.post(service + 'webuser/loginout');
 		$location.url(t.url.login);
-		t.status = "fail";
+		t.status = 'fail';
+	}
+	t.buy = function(s) {
+		t.judge(function() {
+			if (s.status)
+				$location.url('user/car');
+			else {
+				$http.get(service + "gradeFront/addShopcar?gids=" + s.id).then(function(r) {
+					t.info.car = r.data.count;
+					s.status = true;
+				})
+			}
+		})
+	}
+	t.pay = function(s) {
+		t.judge(function() {
+			$http.post(service + "gradeFront/addBalance?gids=" + s).then(function(r) {
+				$location.url('pay/' + r.data.orderid);
+			});
+		})
 	}
 })
-base.factory("fac", function($http) {
+base.factory('fac', function($http) {
 	return {
 		vote: function(c, id, type) {
 			if (type == 1)
 				return c == id;
 			else if (c) {
-				var a = c.split("-");
+				var a = c.split('-');
 				for (var i = a.length; i--;) {
 					if (id == a[i])
 						return true;
@@ -258,21 +321,21 @@ base.factory("fac", function($http) {
 		serialize: function(obj) {
 			var a = new Array()
 			angular.forEach(obj.$$controls, function(v) {
-				a.push(v.$name + "=" + encodeURIComponent(v.$modelValue))
+				a.push(v.$name + '=' + encodeURIComponent(v.$modelValue))
 			})
-			return a.join("&")
+			return a.join('&')
 		}
 	};
-}).factory("data", function($http) {
+}).factory('data', function($http) {
 	var t = {
 		set: function(n, o) {
-			localStorage[n] = angular.isObject(o) ? "ObJ-" + JSON.stringify(o) : o;
-			localStorage[n + "-time"] = (new Date()).getTime();
+			localStorage[n] = angular.isObject(o) ? 'ObJ-' + JSON.stringify(o) : o;
+			localStorage[n + '-time'] = (new Date()).getTime();
 		},
 		get: function(s, n, url, func) {
 			var d = new Date();
-			if (localStorage[n + "-time"] && d.getTime() - localStorage[n + "-time"] < 2592000000)
-				s[n] = localStorage[n].indexOf("ObJ-") > -1 ? JSON.parse(localStorage[n].slice(4)) : localStorage[n];
+			if (localStorage[n + '-time'] && d.getTime() - localStorage[n + '-time'] < 2592000000)
+				s[n] = localStorage[n].indexOf('ObJ-') > -1 ? JSON.parse(localStorage[n].slice(4)) : localStorage[n];
 			else
 				$http.post(service + url).then(function(r) {
 					t.set(n, s[n] = r.data.list);
@@ -330,23 +393,23 @@ base.directive('vPhone', function() {
 base.directive('on', function() {
 	return {
 		scope: {
-			on: "="
+			on: '='
 		},
 		link: function($scope, $element, $attrs) {
-			$scope.$watch("on", function(n) {
+			$scope.$watch('on', function(n) {
 				if (n) {
-					$element.addClass("on");
-					$element.removeAttr("href");
+					$element.addClass('on');
+					$element.removeAttr('href');
 					if (!$attrs.watchOn) {
-						$attrs.$observe("ngHref", function(h) {
+						$attrs.$observe('ngHref', function(h) {
 							if ($scope.on)
-								$element.removeAttr("href");
+								$element.removeAttr('href');
 						})
-						$attrs.$set("watchOn", true, false);
+						$attrs.$set('watchOn', true, false);
 					}
-				} else if ($element.hasClass("on")) {
-					$element.removeClass("on");
-					$element.attr("href", $attrs.ngHref || $attrs.href);
+				} else if ($element.hasClass('on')) {
+					$element.removeClass('on');
+					$element.attr('href', $attrs.ngHref || $attrs.href);
 				}
 			});
 		}
@@ -367,14 +430,45 @@ base.directive('on', function() {
 	return {
 		templateUrl: 'template/nav.html'
 	};
+}).directive('qt', function() {
+	return {
+		scope: {
+			qt: '@'
+		},
+		controller: function($scope, $location, QType) {
+			var a = $scope.qt.split(','),
+				i = a.length,
+				href = $location.path();
+			for (; i--;) {
+				a[i] = QType[a[i]]
+			}
+			$scope.$parent.nav = {
+				href: function(n) {
+					return href + '?cid=' + $scope.$parent.cid + '&type=' + n.type;
+				},
+				on: function(n) {
+					return $scope.$parent.type == n.type;
+				},
+				list: a
+			}
+		}
+	};
 }).directive('clist', function() {
 	return {
 		controller: function($scope, $location, $http, course) {
-			$scope.href = $location.path().split("/")[1];
+			var href = $location.path();
+			$scope.href = function(cid, type) {
+				var b = new Array();
+				if (cid)
+					b.push('cid=' + cid)
+				if (type)
+					b.push('type=' + type)
+				return href + (b.length ? '?' + b.join('&') : '')
+			};
 			if (course.list)
 				$scope.clist = course.list;
 			else
-				$http.post(service + "frontIndex/getAllFrontCourseByMid?major_id=11").then(function(r) {
+				$http.post(service + 'frontIndex/getAllFrontCourseByMid?major_id=11').then(function(r) {
 					$scope.clist = course.list = r.data.list;
 				});
 		},
@@ -388,39 +482,36 @@ base.controller('header', function($scope, $location, $http, msg, load, user, ev
 	$scope.user = user;
 	$scope.nav = {
 		href: function(n) {
-			return n.path || "/";
+			return n.path || '/';
 		},
 		on: function(n) {
-			return $scope.path == n.path;
+			return $scope.path[1] == n.path;
 		},
 		list: [{
-			path: "",
-			txt: "首页"
+			path: '',
+			txt: '首页'
 		}, {
-			path: "news",
-			txt: "资讯"
+			path: 'news',
+			txt: '资讯'
 		}, {
-			path: "class",
-			txt: "课程"
+			path: 'class',
+			txt: '课程'
 		}, {
-			path: "test",
-			txt: "题库"
+			path: 'test',
+			txt: '题库'
 		}, {
-			path: "study",
-			txt: "学习"
-		}, {
-			path: "user",
-			txt: "我的"
+			path: 'user',
+			txt: '学习'
 		}, ]
 	}
 
-	var i = document.getElementById("h_nav1"),
+	var i = document.getElementById('h_nav1'),
 		s = document.body,
 		h_s = function(b) {
 			if (b > 48)
-				i.className = "fixed";
+				i.className = 'fixed';
 			if (b < 48)
-				i.className = "";
+				i.className = '';
 		};
 	window.onscroll = function() {
 		var b = s.scrollTop;
@@ -430,46 +521,42 @@ base.controller('header', function($scope, $location, $http, msg, load, user, ev
 
 	$scope.$on('$locationChangeStart', function(e) {
 		event.scroll = function() {};
-		$scope.path = $location.path().split("/")[1];
+		$scope.path = $location.path().split('/');
 		user.updateURL($location.search().href || $location.url())
-		switch ($scope.path) {
-			case "study":
-			case "detail":
-			case "pwd":
-				user.check(function() {
-					if (user.status != "login") {
-						$location.url(user.url.login);
-						e.preventDefault();
-					}
-				})
-				break;
-		}
+		if ($scope.path[1] == 'user' && $scope.path[2])
+			user.check(function() {
+				if (user.status != 'login') {
+					$location.url(user.url.login);
+					e.preventDefault();
+				}
+			})
 	})
 	$scope.$on('$locationChangeSuccess', function() {
-		setTimeout(function(){
+		setTimeout(function() {
 			document.body.scrollTop = 0;
-			h_s(s.scrollTop);
-		},99)
+			i.className = '';
+		}, 99)
 	});
+
 	user.check();
 })
 
 base.controller('banner', function($scope, $http) {
 	var $s = document.getElementById('swipe'),
 		ms;
-	$http.post(service + "wxuser/getWxImg?mid=11").then(function(r) {
+	$http.post(service + 'wxuser/getWxImg?mid=11').then(function(r) {
 		if (ms)
 			ms.kill()
 		$scope.list = r.data.list;
 		setTimeout(function() {
 			var $swi = $s.getElementsByTagName('i')
-			$swi[0].className = "on";
+			$swi[0].className = 'on';
 			ms = new Swipe($s, {
 				startSlide: 0,
 				auto: 4000,
 				transitionEnd: function(i) {
-					$s.getElementsByClassName('on')[0].className = "";
-					$swi[i].className = "on";
+					$s.getElementsByClassName('on')[0].className = '';
+					$swi[i].className = 'on';
 				}
 			})
 		}, 999)
@@ -477,13 +564,15 @@ base.controller('banner', function($scope, $http) {
 })
 
 base.controller('home', function($scope, $http, user, fac) {
-	$http.post(service + "infomation/getHomeInfomation?cp=1&type=2&mid=11").then(function(r) {
+	$scope.scrollTo = fac.scrollTo;
+	$scope.user = user;
+	$http.post(service + 'infomation/getHomeInfomation?cp=1&type=2&mid=11').then(function(r) {
 		$scope.news = r.data.list[0];
 	});
-	$http.post(service + "frontIndex/getAllFrontTeacher?page=1&rows=20&mid=11").then(function(r) {
+	$http.post(service + 'frontIndex/getAllFrontTeacher?page=1&rows=20&mid=11').then(function(r) {
 		$scope.ht_list = r.data.list;
 		setTimeout(function() {
-			var $s = document.querySelectorAll(".l_teacher"),
+			var $s = document.querySelectorAll('.l_teacher'),
 				l = $s.length;
 			Swipe(document.getElementById('swipe_h1'), {
 				startSlide: 0,
@@ -493,25 +582,24 @@ base.controller('home', function($scope, $http, user, fac) {
 						j = l;
 					for (; j--;) {
 						if (j == i || j == i1 || j == i2)
-							$s[j].style.visibility = "visible";
+							$s[j].style.visibility = 'visible';
 						else
-							$s[j].style.visibility = "hidden";
+							$s[j].style.visibility = 'hidden';
 					}
 				}
 			})
 			for (var j = l; j--;) {
 				if (j == 0 || j == 1)
-					$s[j].style.visibility = "visible";
+					$s[j].style.visibility = 'visible';
 				else
-					$s[j].style.visibility = "hidden";
+					$s[j].style.visibility = 'hidden';
 			}
 		}, 999)
 	});
-	$scope.scrollTo = fac.scrollTo;
 })
 
 base.controller('scene', function($scope, $http, $attrs, $routeParams) {
-	$http.post(service + "frontIndex/getAllFrontsceneNf").then(function(r) {
+	$http.post(service + 'frontIndex/getAllFrontsceneNf').then(function(r) {
 		$scope.ylist = r.data.list;
 		$scope.year = $routeParams.year || r.data.list[0].year
 		$scope.get();
@@ -520,7 +608,7 @@ base.controller('scene', function($scope, $http, $attrs, $routeParams) {
 	$scope.list = new Array();
 	$scope.get = function() {
 		$scope.page = ($scope.page || 0) + 1;
-		$http.post(service + "frontIndex/getAllFrontscene?rows=" + $scope.rows + "&page=" + $scope.page + "&year=" + $scope.year).then(function(r) {
+		$http.post(service + 'frontIndex/getAllFrontscene?rows=' + $scope.rows + '&page=' + $scope.page + '&year=' + $scope.year).then(function(r) {
 			$scope.list = $scope.list.concat(r.data.list);
 			$scope.total = r.data.total;
 			if ($attrs.rows)
@@ -536,13 +624,13 @@ base.controller('scene', function($scope, $http, $attrs, $routeParams) {
 		$scope.plist = p.slist;
 		setTimeout(function() {
 			var $swi = $s.getElementsByTagName('i')
-			$swi[0].className = "on";
+			$swi[0].className = 'on';
 			ms = new Swipe($s, {
 				startSlide: 0,
 				auto: 4000,
 				transitionEnd: function(i) {
-					$s.getElementsByClassName('on')[0].className = "";
-					$swi[i].className = "on";
+					$s.getElementsByClassName('on')[0].className = '';
+					$swi[i].className = 'on';
 				}
 			})
 		}, 999)
@@ -565,7 +653,7 @@ base.controller('download', function($scope, $http, $attrs, $routeParams, user) 
 	$scope.user = user;
 	$scope.get = function() {
 		$scope.page = ($scope.page || 0) + 1;
-		$http.post(service + "frontIndex/getMaterial?page=" + $scope.page + "&rows=" + $scope.rows + "&mid=11").then(function(r) {
+		$http.post(service + 'frontIndex/getMaterial?page=' + $scope.page + '&rows=' + $scope.rows + '&mid=11').then(function(r) {
 			$scope.list = r.data.list;
 			$scope.total = r.data.total;
 		});
@@ -577,7 +665,7 @@ base.controller('teacherList', function($scope, $http, $attrs) {
 	var rows = $attrs.rows || 20;
 	$scope.get = function(i, b) {
 		$scope.page = ($scope.page || 0) + 1;
-		$http.post(service + "frontIndex/getAllFrontTeacher?page=" + $scope.page + "&rows=" + rows + "&mid=11").then(function(r) {
+		$http.post(service + 'frontIndex/getAllFrontTeacher?page=' + $scope.page + '&rows=' + rows + '&mid=11').then(function(r) {
 			$scope.list = r.data.list;
 			$scope.total = r.data.total;
 		});
@@ -590,20 +678,20 @@ base.controller('newsList', function($scope, $http, $sce, $routeParams) {
 	$scope.type = $routeParams.type || 6;
 
 	$scope.nlist = [{
-		name: "地方资讯",
+		name: '地方资讯',
 		type: 6,
 	}, {
-		name: "行业热点",
+		name: '行业热点',
 		type: 3,
 	}, {
-		name: "专题报道",
+		name: '专题报道',
 		type: 7,
 	}, {
-		name: "法律法规",
+		name: '法律法规',
 		type: 4,
 	}]
 
-	$http.post(service + "frontIndex/getInfomationEj?type=" + $scope.type).then(function(r) {
+	$http.post(service + 'frontIndex/getInfomationEj?type=' + $scope.type).then(function(r) {
 		$scope.clist = r.data.list;
 		$scope.sid = $routeParams.sid || 0;
 		$scope.get()
@@ -611,7 +699,7 @@ base.controller('newsList', function($scope, $http, $sce, $routeParams) {
 
 	$scope.get = function(i, b) {
 		$scope.page = ($scope.page || 0) + 1;
-		$http.post(service + "frontIndex/getHomeInfomation?rows=20&page=" + $scope.page + "&type=" + $scope.type + "&type_id=" + $scope.sid).then(function(r) {
+		$http.post(service + 'frontIndex/getHomeInfomation?rows=20&page=' + $scope.page + '&type=' + $scope.type + '&type_id=' + $scope.sid).then(function(r) {
 			$scope.list = $scope.list.concat(r.data.list);
 			$scope.total = r.data.total;
 		});
@@ -622,7 +710,7 @@ base.controller('news', function($scope, $http, $sce, $routeParams) {
 	$scope.html = function(s) {
 		return $sce.trustAsHtml(s);
 	}
-	$http.post(service + "infomation/getInfomationContent?zid=" + $routeParams.id).then(function(r) {
+	$http.post(service + 'infomation/getInfomationContent?zid=' + $routeParams.id).then(function(r) {
 		$scope.info = r.data.list;
 		$scope.hlist = r.data.hlist;
 		$scope.qlist = r.data.qlist;
@@ -631,10 +719,10 @@ base.controller('news', function($scope, $http, $sce, $routeParams) {
 
 base.controller('classList', function($scope, $http, $routeParams, user) {
 	$scope.user = user;
-	$scope.chref = "class";
+	$scope.chref = 'class';
 	$scope.cid = $routeParams.cid || 0;
 	$scope.get = function(i, b) {
-		$http.post(service + "gradeFront/getGradeByCid?mid=11&cid=" + $scope.cid).then(function(r) {
+		$http.post(service + 'gradeFront/getGradeByCid?mid=11&cid=' + $scope.cid).then(function(r) {
 			$scope.list = r.data.list;
 		});
 	}
@@ -642,47 +730,48 @@ base.controller('classList', function($scope, $http, $routeParams, user) {
 })
 
 base.controller('class', function($scope, $http, $sce, $routeParams, msg, user, event) {
+	$scope.user = user;
 	$scope.random = Math.floor(Math.random() * 9) % 3 + 1;
-	var i = document.getElementById("vd1");
+	var i = document.getElementById('vd1');
 	event.scroll = function(b) {
 		if (b > 103)
-			i.className = "video fixed";
+			i.className = 'video fixed';
 		if (b < 103)
-			i.className = "video";
+			i.className = 'video';
 	}
 
 	user.check(function() {
-		if (user.status == "login") {
+		if (user.status == 'login') {
 			var $video = document.getElementById('vo'),
 				n = 0;
-			$video.addEventListener("timeupdate", function() {
+			$video.addEventListener('timeupdate', function() {
 				n++;
 				if (n % 99 == 0) {
-					$http.post(service + "gradeFront/upVideoPro?vid=" + $scope.vid + "&current_time=" + $video.currentTime + "&total_time=" + $video.duration)
+					$http.post(service + 'gradeFront/upVideoPro?vid=' + $scope.vid + '&current_time=' + $video.currentTime + '&total_time=' + $video.duration)
 				}
 			})
-			$video.addEventListener("pause", function() {
-				$http.post(service + "gradeFront/upVideoPro?vid=" + $scope.vid + "&current_time=" + $video.currentTime + "&total_time=" + $video.duration)
+			$video.addEventListener('pause', function() {
+				$http.post(service + 'gradeFront/upVideoPro?vid=' + $scope.vid + '&current_time=' + $video.currentTime + '&total_time=' + $video.duration)
 			})
 		}
 	})
 
 	$scope.nlist = [{
 		type: 0,
-		name: "课程介绍"
+		name: '课程介绍'
 	}, {
 		type: 1,
-		name: "视频目录"
+		name: '视频目录'
 	}, {
 		type: 2,
-		name: "学员评价"
+		name: '学员评价'
 	}]
 	$scope.html = function(s) {
 		return $sce.trustAsHtml(s);
 	}
 	$scope.type = $routeParams.type || 0;
 	$scope.vid = $routeParams.vid;
-	$http.post(service + "gradeFront/getVideoBygid?gid=" + $routeParams.id).then(function(r) {
+	$http.post(service + 'gradeFront/getVideoBygid?gid=' + $routeParams.id).then(function(r) {
 		$scope.info = r.data.list;
 		$scope.info.index = 0;
 		if ($scope.info.glist)
@@ -702,33 +791,33 @@ base.controller('class', function($scope, $http, $sce, $routeParams, msg, user, 
 
 	$scope.getVideo = function(v, b) {
 		if (b || v.id != $scope.vid) {
-			$http.post(service + "gradeFront/getByVId?gid=" + $scope.vlist[$scope.info.index].id + "&vid=" + v.id).then(function(r) {
+			$http.post(service + 'gradeFront/getByVId?gid=' + $scope.vlist[$scope.info.index].id + '&vid=' + v.id).then(function(r) {
 				$scope.vid = v.id;
 				$scope.video = r.data.url;
 			});
 		}
 	}
 
-	$http.post(service + "gradeFront/findTBygid?gid=" + $routeParams.id).then(function(r) {
+	$http.post(service + 'gradeFront/findTBygid?gid=' + $routeParams.id).then(function(r) {
 		var tname = new Array(),
 			i = r.data.list.length;
 		for (; i--;) {
 			tname.push(r.data.list[i].name)
 		}
-		$scope.techers = tname.join("，");
+		$scope.techers = tname.join('，');
 	});
 
 	$scope.star = 5;
 	$scope.stars = [1, 2, 3, 4, 5];
-	$scope.comment = "";
+	$scope.comment = '';
 	$scope.sub = function() {
-		$http.post(service + "gradeFront/addComment", "gid=" + $routeParams.id + "&content=" + $scope.comment + "&star=" + $scope.star).then(function(r) {
+		$http.post(service + 'gradeFront/addComment', 'gid=' + $routeParams.id + '&content=' + $scope.comment + '&star=' + $scope.star).then(function(r) {
 			msg.show(r.data.msg)
 			$scope.getComment();
 		});
 	}
 	$scope.getComment = function() {
-		$http.post(service + "gradeFront/getComment", "gid=" + $routeParams.id).then(function(r) {
+		$http.post(service + 'gradeFront/getComment', 'gid=' + $routeParams.id).then(function(r) {
 			$scope.clist = r.data.list;
 		});
 	}
@@ -736,15 +825,6 @@ base.controller('class', function($scope, $http, $sce, $routeParams, msg, user, 
 })
 
 base.controller('qlist', function($scope, $http, $sce, $filter, $routeParams, QType, fac) {
-	$scope.nav = {
-		href: function(n) {
-			return '/test?cid=' + $scope.cid + '&type=' + n.type;
-		},
-		on: function(n) {
-			return $scope.type == n.type;
-		},
-		list: QType.slice(0, 4)
-	}
 	$scope.pen = fac.pen;
 	$scope.cid = $routeParams.cid || 0;
 	$scope.type = $routeParams.type || QType[0].type;
@@ -752,7 +832,7 @@ base.controller('qlist', function($scope, $http, $sce, $filter, $routeParams, QT
 	$scope.rows = 20;
 	$scope.get = function(i, b) {
 		$scope.page = ($scope.page || 0) + 1;
-		$http.post(service + "exam/get" + $scope.type + "?page=" + $scope.page + "&rows=" + $scope.rows + "&mid=11&cid=" + $scope.cid).then(function(r) {
+		$http.post(service + 'exam/get' + $scope.type + '?page=' + $scope.page + '&rows=' + $scope.rows + '&mid=11&cid=' + $scope.cid).then(function(r) {
 			$scope.list = $scope.list.concat(r.data.list);
 			$scope.total = r.data.total
 		});
@@ -761,7 +841,7 @@ base.controller('qlist', function($scope, $http, $sce, $filter, $routeParams, QT
 	$scope.getS = function(c) {
 		c.showL = !c.showL;
 		if (c.showL && !c.sublist) {
-			$http.post(service + "exam/getSections?sid=" + c.id).then(function(r) {
+			$http.post(service + 'exam/getSections?sid=' + c.id).then(function(r) {
 				c.sublist = r.data.list;
 			});
 		}
@@ -769,7 +849,7 @@ base.controller('qlist', function($scope, $http, $sce, $filter, $routeParams, QT
 
 	if ($scope.type == QType[3].type) {
 		$scope.date = $filter('date')(new Date(), 'yyyy年MM月dd日');
-		$scope.$watch("clist", function(n) {
+		$scope.$watch('clist', function(n) {
 			if (n)
 				angular.forEach(n, function(v) {
 					var s = {
@@ -795,12 +875,12 @@ base.controller('test', function($scope, $http, $sce, $routeParams, $interval, Q
 		ans: true,
 		prev: false,
 		next: true,
-		test: "" //start test end submit
+		test: '' //start test end submit
 	}
 
 	$scope.ti = $scope.si = $scope.score = 0;
 	$scope.start = function(bl) {
-		$scope.status.test = "test";
+		$scope.status.test = 'test';
 		if (bl) {
 			$scope.status.time = true;
 			$scope.status.ans = false;
@@ -846,25 +926,25 @@ base.controller('test', function($scope, $http, $sce, $routeParams, $interval, Q
 		$scope.status.alert = true;
 	}
 	$scope.hide = function() {
-		if ($scope.status.time && $scope.status.test == "test")
+		if ($scope.status.time && $scope.status.test == 'test')
 			$scope.play();
 		$scope.status.alert = false;
 	}
 	$scope.submit = function() {
 		for (var i = $scope.list.length; i--;) {
 			for (var q = $scope.list[i].question.length; q--;) {
-				if ($scope.list[i].question[q].yesno == "yes")
+				if ($scope.list[i].question[q].yesno == 'yes')
 					$scope.score++;
 			}
 		}
-		$scope.status.test = "submit";
+		$scope.status.test = 'submit';
 		$scope.status.ans = false;
 	}
 
 	var s = 0,
 		m = 0,
 		i = 0;
-	$scope.time = "0:00";
+	$scope.time = '0:00';
 	$scope.play = function() {
 		i = $interval(function() {
 			if (s == 59) {
@@ -872,11 +952,11 @@ base.controller('test', function($scope, $http, $sce, $routeParams, $interval, Q
 				s = 0;
 			} else
 				s++;
-			$scope.time = m + ":" + (s < 10 ? "0" + s : s);
+			$scope.time = m + ':' + (s < 10 ? '0' + s : s);
 			if (m == $scope.info.times) {
 				$scope.stop();
 				$scope.status.alert = true;
-				$scope.status.test = "end";
+				$scope.status.test = 'end';
 			}
 		}, 1000);
 	}
@@ -889,7 +969,7 @@ base.controller('test', function($scope, $http, $sce, $routeParams, $interval, Q
 		if (QType[i].type == $routeParams.type) {
 			url = QType[i];
 			if (url.info) {
-				$http.get(service + "exam/get" + url.info + "ById?sid=" + $routeParams.id).then(function(r) {
+				$http.get(service + 'exam/get' + url.info + 'ById?sid=' + $routeParams.id).then(function(r) {
 					$scope.status.test = 'start';
 					$scope.info = r.data.list[0];
 				});
@@ -898,7 +978,7 @@ base.controller('test', function($scope, $http, $sce, $routeParams, $interval, Q
 				$scope.status.fav = true;
 		}
 	}
-	$http.post(service + "exam/get" + url.get + "?" + (url.info ? "sid=" : "mid=11&cid=") + $routeParams.id).then(function(r) {
+	$http.post(service + 'exam/get' + url.get + '?' + (url.sid ? 'sid=' : 'mid=11&cid=') + $routeParams.id).then(function(r) {
 		if (url.type == 'DayQueston') {
 			var q1 = new Array(),
 				q2 = new Array();
@@ -911,23 +991,23 @@ base.controller('test', function($scope, $http, $sce, $routeParams, $interval, Q
 				$scope.list.push({
 					question: q1,
 					question_type_id: 1,
-					question_type_name: "单选题"
+					question_type_name: '单选题'
 				})
 			if (q2.length)
 				$scope.list.push({
 					question: q2,
 					question_type_id: 2,
-					question_type_name: "多选题"
+					question_type_name: '多选题'
 				})
 		} else
 			$scope.list = r.data.list;
 		$scope.get();
 		if (!$scope.status.test)
-			$scope.status.test = "test";
+			$scope.status.test = 'test';
 	});
 
 	var split = function(s, str) {
-			var a = str.split("-"),
+			var a = str.split('-'),
 				b = new Array(),
 				c = true;
 			for (var i = a.length; i--;) {
@@ -938,7 +1018,7 @@ base.controller('test', function($scope, $http, $sce, $routeParams, $interval, Q
 			}
 			if (c)
 				b.push(s)
-			return b.sort().join("-")
+			return b.sort().join('-')
 		},
 		getResult = function(s) {
 			if (!s.result) {
@@ -947,14 +1027,14 @@ base.controller('test', function($scope, $http, $sce, $routeParams, $interval, Q
 					if (s.options[i].is_real)
 						s.result.push(s.options[i].id);
 				}
-				s.result = s.result.sort().join("-");
+				s.result = s.result.sort().join('-');
 			}
-			return s.yesno = s.result == s.checked ? "yes" : "no";
+			return s.yesno = s.result == s.checked ? 'yes' : 'no';
 		}
 	$scope.vote = fac.vote;
 	$scope.pen = fac.pen;
 	$scope.goVote = function(s, aid) {
-		s.checked = (s.question_type_id == 1 || !s.checked) ? "" + aid : split(aid, s.checked);
+		s.checked = (s.question_type_id == 1 || !s.checked) ? '' + aid : split(aid, s.checked);
 		getResult(s);
 		if (s.question_type_id == 1) {
 			// if ($scope.status.time)
@@ -962,18 +1042,18 @@ base.controller('test', function($scope, $http, $sce, $routeParams, $interval, Q
 			// else
 			// 	s.showA = true;
 		}
-		if (user.status == "login")
-			$http.get(service + "exam/update" + url.update + "byqid?id=" + s.id + "&answers=" + s.checked)
+		if (user.status == 'login')
+			$http.get(service + 'exam/update' + url.update + 'byqid?id=' + s.id + '&answers=' + s.checked)
 	}
 
 	$scope.changeFav = function(s) {
 		user.judge(function() {
 			if (s.colled = !s.colled)
-				$http.get(service + "exam/addStudy?type=" + url.star + "&qid=" + s.id + "&answers=" + s.checked).then(function(r) {
+				$http.get(service + 'exam/addStudy?type=' + url.id + '&qid=' + s.id + '&answers=' + s.checked).then(function(r) {
 					s.clcid = r.data.list[0].clcid;
 				});
 			else
-				$http.get(service + "exam/removeStudy?clcid=" + s.clcid);
+				$http.get(service + 'exam/removeStudy?clcid=' + s.clcid);
 		})
 	}
 })
@@ -983,7 +1063,7 @@ base.controller('teacherList', function($scope, $http) {
 	$scope.list = new Array();
 	$scope.get = function() {
 		$scope.page = ($scope.page || 0) + 1;
-		$http.post(service + "frontIndex/getAllFrontTeacher?page=" + $scope.page + "&rows=" + $scope.rows + "&mid=11").then(function(r) {
+		$http.post(service + 'frontIndex/getAllFrontTeacher?page=' + $scope.page + '&rows=' + $scope.rows + '&mid=11').then(function(r) {
 			$scope.list = $scope.list.concat(r.data.list);
 			$scope.total = r.data.total
 		});
@@ -993,14 +1073,14 @@ base.controller('teacherList', function($scope, $http) {
 
 base.controller('teacher', function($scope, $http, $routeParams) {
 	$scope.id = $routeParams.id;
-	$http.post(service + "frontIndex/getFrontTeabyid?id=" + $scope.id).then(function(r) {
+	$http.post(service + 'frontIndex/getFrontTeabyid?id=' + $scope.id).then(function(r) {
 		$scope.info = r.data.list[0];
 	});
 	$scope.rows = 20;
 	$scope.list = new Array();
 	$scope.get = function(i) {
 		$scope.page = ($scope.page || 0) + 1;
-		$http.post(service + "frontIndex/getTeacherVideo?page=" + $scope.page + "&rows=" + $scope.rows + "&tid=" + $scope.id).then(function(r) {
+		$http.post(service + 'frontIndex/getTeacherVideo?page=' + $scope.page + '&rows=' + $scope.rows + '&tid=' + $scope.id).then(function(r) {
 			if (!$scope.total)
 				$scope.total = r.data.total
 			var i = r.data.list.length,
@@ -1010,8 +1090,8 @@ base.controller('teacher', function($scope, $http, $routeParams) {
 				gname;
 			for (; i--;) {
 				if (r.data.list[i].name.indexOf('课件') == -1 && r.data.list[i].gids) {
-					gid = r.data.list[i].gids.split(",");
-					gname = r.data.list[i].gnames.split(",");
+					gid = r.data.list[i].gids.split(',');
+					gname = r.data.list[i].gnames.split(',');
 					r.data.list[i].grade = new Array();
 					for (l = gid.length; l--;) {
 						r.data.list[i].grade.push({
@@ -1030,27 +1110,31 @@ base.controller('teacher', function($scope, $http, $routeParams) {
 })
 
 base.controller('auth', function($scope, $http, $interval, $location, $routeParams, fac, user) {
+	user.check(function() {
+		if (user.status == 'login')
+			$location.url($routeParams.href || '/');
+	})
 	$scope.nav = {
 		margin: true,
-		href:function(n){
-			return n.url+ ($scope.ph ? '&ph=' + $scope.ph : '')
+		href: function(n) {
+			return n.url + ($scope.ph ? '&ph=' + $scope.ph : '')
 		},
 		on: function(n, i) {
-			$scope.type = $location.path().split("/")[1];
-			if ($scope.type == "login")
+			$scope.type = $location.path();
+			if ($scope.type == '/login')
 				return !i;
-			else if ($scope.type == "register")
+			else if ($scope.type == '/register')
 				return i == 1;
 		},
 		list: [{
 			url: user.url.login,
-			txt: "登录"
+			txt: '登录'
 		}, {
 			url: user.url.register,
-			txt: "注册"
+			txt: '注册'
 		}, {
-			href: "help/0",
-			txt: "帮助"
+			href: 'help/0',
+			txt: '帮助'
 		}]
 	}
 	$scope.user = user;
@@ -1058,9 +1142,9 @@ base.controller('auth', function($scope, $http, $interval, $location, $routePara
 
 	$scope.checked = 1;
 	$scope.login = function() {
-		$http.post(service + "webuser/login", fac.serialize($scope.lf)).then(function(r) {
+		$http.post(service + 'webuser/login', fac.serialize($scope.lf)).then(function(r) {
 			user.bind(r.data)
-			$location.url($routeParams.href || "/");
+			$location.url($routeParams.href || '/');
 		});
 	}
 
@@ -1072,7 +1156,7 @@ base.controller('auth', function($scope, $http, $interval, $location, $routePara
 	}
 	$scope.send = function() {
 		if ($scope.rf.ph.$valid && $scope.rf.imgcode.$valid) {
-			$http.get(service + "webuser/getCode?ph=" + $scope.ph + "&vcode=" + $scope.imgcode).then(function(r) {
+			$http.get(service + 'webuser/getCode?ph=' + $scope.ph + '&vcode=' + $scope.imgcode).then(function(r) {
 				$scope.r++;
 				$scope.s = 60;
 				$scope.sended = true;
@@ -1088,7 +1172,7 @@ base.controller('auth', function($scope, $http, $interval, $location, $routePara
 	}
 	$scope.readed = true;
 	$scope.register = function() {
-		$http.post(service + "webuser/regist", fac.serialize($scope.rf)).then(function(r) {
+		$http.post(service + 'webuser/regist', fac.serialize($scope.rf)).then(function(r) {
 			user.bind(r.data)
 			$scope.ok = true;
 			$scope.oks = 3;
@@ -1096,7 +1180,7 @@ base.controller('auth', function($scope, $http, $interval, $location, $routePara
 				if ($scope.oks) $scope.oks--;
 				else {
 					$interval.cancel(stop);
-					$location.url($routeParams.href || "/");
+					$location.url($routeParams.href || '/');
 				}
 			}, 999)
 		});
@@ -1111,8 +1195,8 @@ base.controller('find', function($scope, $http, $interval, $location, $routePara
 	}
 	$scope.send = function(ph) {
 		if ($scope.phone.ph.$valid && $scope.phone.imgcode.$valid) {
-			$http.get(service + "webuser/findPh?ph=" + ph).then(function(r) {
-				$http.get(service + "webuser/getCode?reg=1&ph=" + ph + "&vcode=" + $scope.imgcode).then(function(r) {
+			$http.get(service + 'webuser/findPh?ph=' + ph).then(function(r) {
+				$http.get(service + 'webuser/getCode?reg=1&ph=' + ph + '&vcode=' + $scope.imgcode).then(function(r) {
 					$scope.r++;
 					$scope.s = 60;
 					$scope.sended = true;
@@ -1129,20 +1213,20 @@ base.controller('find', function($scope, $http, $interval, $location, $routePara
 	}
 	$scope.step = 1;
 	$scope.sub1 = function() {
-		$http.post(service + "webuser/findUpPwd", fac.serialize($scope.phone)).then(function(r) {
+		$http.post(service + 'webuser/findUpPwd', fac.serialize($scope.phone)).then(function(r) {
 			$scope.step = 2;
 			$scope.key = r.data.list[0].key;
 		});
 	}
 	$scope.sub2 = function() {
-		$http.post(service + "webuser/updateAppUserPassword", fac.serialize($scope.pwd)).then(function(r) {
+		$http.post(service + 'webuser/updateAppUserPassword', fac.serialize($scope.pwd)).then(function(r) {
 			$scope.step = 3;
 			$scope.oks = 3;
 			var stop = $interval(function() {
 				if ($scope.oks) $scope.oks--;
 				else {
 					$interval.cancel(stop);
-					$location.url($routeParams.href || "/");
+					$location.url($routeParams.href || '/');
 				}
 			}, 999)
 		});
@@ -1150,49 +1234,49 @@ base.controller('find', function($scope, $http, $interval, $location, $routePara
 })
 
 base.controller('help', function($scope, $routeParams) {
+	$scope.i = $routeParams.i;
 	$scope.nav = {
 		margin: true,
-		href:function(n,i){
-			return "/help/"+i;
+		href: function(n, i) {
+			return 'help/' + i;
 		},
 		on: function(n, i) {
-			$scope.i = $routeParams.i || 0;
 			return $scope.i == i;
 		},
 		list: [{
-			txt: "新手指南"
+			txt: '新手指南'
 		}, {
-			txt: "支付方式"
+			txt: '支付方式'
 		}, {
-			txt: "售后服务"
+			txt: '售后服务'
 		}, {
-			txt: "服务条款"
+			txt: '服务条款'
 		}]
 	}
 })
 
 base.controller('about', function($scope, $http, $sce, $routeParams) {
+	$scope.i = $routeParams.i;
 	$scope.nav = {
 		margin: true,
-		href:function(n,i){
-			return "/about/"+i;
+		href: function(n, i) {
+			return 'about/' + i;
 		},
 		on: function(n, i) {
-			$scope.i = $routeParams.i || 0;
 			return $scope.i == i;
 		},
 		list: [{
-			txt: "企业简介"
+			txt: '企业简介'
 		}, {
-			txt: "企业文化"
+			txt: '企业文化'
 		}, {
-			txt: "招贤纳士"
+			txt: '招贤纳士'
 		}, {
-			txt: "联系我们"
+			txt: '联系我们'
 		}]
 	}
 
-	$http.post(service + "frontIndex/getRecruit").then(function(r) {
+	$http.post(service + 'frontIndex/getRecruit').then(function(r) {
 		$scope.list = r.data.list;
 		$scope.get(0)
 	});
@@ -1204,36 +1288,294 @@ base.controller('about', function($scope, $http, $sce, $routeParams) {
 
 base.controller('mine', function($scope, user) {
 	$scope.user = user;
+	$scope.list = [{
+		list: [{
+			url: 'plan',
+			src: 10,
+			txt: '学习计划'
+		}, {
+			url: 'wrong',
+			src: 11,
+			txt: '错题记录'
+		}, {
+			url: 'fav',
+			src: 12,
+			txt: '我的收藏'
+		}, {
+			url: 'class',
+			src: 13,
+			txt: '我的课程'
+		}]
+	}, {
+		list: [{
+			url: 'msg',
+			src: 0,
+			txt: '通知'
+		}, {
+			url: 'order',
+			src: 1,
+			txt: '订单'
+		}, {
+			url: 'car',
+			src: 2,
+			txt: '购物车'
+		}]
+	}, {
+		list: [{
+			url: 'detail',
+			src: 3,
+			txt: '个人资料'
+		}, {
+			url: 'pwd',
+			src: 4,
+			txt: '修改密码'
+		}]
+	}];
 })
 
 base.controller('detail', function($scope, $http, fac, user, msg) {
-	$http.post(service + "webuser/getPros").then(function(r) {
+	$http.post(service + 'webuser/getPros').then(function(r) {
 		r.data.list.unshift({
 			id: 0,
-			province_name: "请选择所在地区"
+			province_name: '请选择所在地区'
 		})
 		$scope.plist = r.data.list;
 	});
-	if(!user.info.province_id)
+	if (!user.info.province_id)
 		user.info.province_id = 0;
 	$scope.user = user;
 	$scope.sub = function() {
-		$http.post(service + "webuser/updateAppUser", fac.serialize($scope.info)).then(function() {
-			msg.show("修改成功")
+		$http.post(service + 'webuser/updateAppUser', fac.serialize($scope.info)).then(function() {
+			msg.show('修改成功')
 		});;
 	}
 })
 
 base.controller('pwd', function($scope, $http, $location, fac, user, msg) {
 	$scope.sub = function() {
-		$http.post(service + "webuser/updateUserPassword", fac.serialize($scope.pwd)).then(function() {
-			user.status = ""
-			msg.show("修改成功，请重新登录");
-			$location.url("/login");
+		$http.post(service + 'webuser/updateUserPassword', fac.serialize($scope.pwd)).then(function() {
+			user.status = ''
+			msg.show('修改成功，请重新登录');
+			$location.url(user.url.login);
 		});
 	}
 })
 
-base.controller('plan', function($scope, $http, $routeParams, user) {
+base.controller('userNews', function($scope, $http, $sce, user, $routeParams) {
 	$scope.user = user;
+	$scope.html = function(s) {
+		return $sce.trustAsHtml(s);
+	}
+	if ($routeParams.id)
+		$http.get(service + 'webuser/getNewsByid?nid=' + $routeParams.id).then(function(r) {
+			$scope.info = r.data.list[0];
+		})
+})
+
+base.controller('plan', function($scope, $http, $routeParams) {
+	$scope.cid = $routeParams.cid || 0;
+	$scope.type = $routeParams.type || 0;
+	$scope.nav = {
+		href: function(n, i) {
+			return '/user/plan?cid=' + $scope.cid + '&type=' + n.type;
+		},
+		on: function(n, i) {
+			return $scope.type == n.type;
+		},
+		list: [{
+			type: 0,
+			txt: '观看视频'
+		}, {
+			type: 1,
+			txt: '练习试题'
+		}]
+	}
+
+	var url = ["PlanGrade", "GradeExam"]
+	$scope.show = function(q, gid) {
+		q.show = !q.show;
+		if (q.show && !q.list) {
+			$http.post(service + "webuser/getMy" + url[$scope.type] + "Order?gid=" + gid + "&order_id=" + q.order_id).then(function(r) {
+				q.list = r.data.list;
+			});
+		}
+	}
+	$http.post(service + "webuser/getMy" + url[$scope.type] + "?rows=99&mid=11&cid=" + $scope.cid).then(function(r) {
+		$scope.list = r.data.list;
+		for (var i = $scope.list.length; i--;) {
+			if (!$scope.list[i].jdlist.length) $scope.list.splice(i, 1)
+		}
+	});
+})
+
+base.controller('myClass', function($scope, $http) {
+	$http.post(service + 'webuser/getMyGrade?page=1&rows=99').then(function(r) {
+		$scope.list = r.data.list;
+	});
+})
+
+base.controller('myTest', function($scope, $http, $sce, $location, $routeParams, fac, QType) {
+	$scope.cid = $routeParams.cid || 0;
+	$scope.type = $routeParams.type || QType[0].type;
+	var re = function() {
+			$scope.list.length = $scope.page = 0;
+			$scope.get(1);
+		},
+		ti = 0;
+	for (var i = QType.length; i--;) {
+		if ($scope.type == QType[i].type)
+			ti = QType[i].id;
+	}
+	$scope.star = ti == 1 || ti == 4;
+	$scope.fav = $location.path().split("/")[2] == 'fav';
+	$scope.html = function(s) {
+		return $sce.trustAsHtml(s);
+	}
+	$scope.vote = fac.vote;
+	$scope.pen = fac.pen;
+
+	$scope.list = new Array();
+	$scope.get = function() {
+		$scope.page = ($scope.page || 0) + 1;
+		$http.post(service + "exam/get" + ($scope.fav ? 'MyStudyCollQuestion' : 'ErrQuestions') + "?page=" + $scope.page + "&rows=20&mid=11&cid=" + $scope.cid + "&type=" + ti).then(function(r) {
+			$scope.list = $scope.list.concat(r.data.list);
+			$scope.total = r.data.total;
+		});
+	}
+	$scope.get();
+
+	$scope.delStudy = function(qid) {
+		$http.get(service + "exam/removerrStudy?qid=" + qid + "&type=" + ti).then(function(r) {
+			re();
+		});
+	}
+	$scope.addStar = function(s) {
+		s.colled = true;
+		$http.get(service + "exam/addStudy?qid=" + s.qid + "&type=" + $scope.type + (s.checked ? "&answers=" + s.checked : "")).then(function(r) {
+			s.clcid = r.data.list[0].clcid;
+			if ($scope.fav) re();
+		});
+	}
+	$scope.delStar = function(s) {
+		s.colled = false;
+		$http.get(service + "exam/removeStudy?clcid=" + s.clcid).then(function(r) {
+			if ($scope.fav) re();
+		});
+	}
+
+	$scope.show = function(s) {
+		$scope.s = s;
+		$scope.alert = true;
+	}
+})
+
+base.controller('order', function($scope, $http, $routeParams) {
+	$scope.type = $routeParams.type || 1;
+	$scope.nav = {
+		margin: true,
+		href: function(n, i) {
+			return '/user/order?type=' + n.type;
+		},
+		on: function(n, i) {
+			return $scope.type == n.type;
+		},
+		list: [{
+			type: 1,
+			txt: '已完成订单'
+		}, {
+			type: 0,
+			txt: '未完成订单'
+		}]
+	}
+
+	$scope.list = new Array();
+	$scope.get = function() {
+		$scope.page = ($scope.page || 0) + 1;
+		$http.post(service + "webuser/getMyOrder?rows=20" + '&page=' + $scope.page + '&status=' + $scope.type).then(function(r) {
+			$scope.list = $scope.list.concat(r.data.list);
+			$scope.total = r.data.total
+		});
+	}
+	$scope.get()
+
+	$scope.del = function(id) {
+		$http.post(service + "webuser/removeMyOrder?ids=" + id).then(function() {
+			$scope.list.length = $scope.page = 0;
+			$scope.get();
+		})
+	}
+	$scope.pay = function(id) {
+		$http.post(service + "wxuser/wxReplaypay?id=" + id).then(function(r) {
+			user.pay(r.data);
+		});
+	}
+})
+
+base.controller('car', function($scope, $http, $location, user) {
+	$http.post(service + "gradeFront/getShopcar").then(function(r) {
+		$scope.list = r.data.list;
+	});
+
+	$scope.checklength = $scope.price = 0;
+	$scope.del = function(s, i) {
+		$http.post(service + "gradeFront/removeShopcar?ids=" + s.sid);
+		$scope.list.splice(i, 1);
+	}
+	$scope.check = function(g) {
+		if (g.check = !g.check) {
+			$scope.checklength++;
+			$scope.price += g.cmoney - 0;
+		} else {
+			$scope.checklength--;
+			$scope.price -= g.cmoney - 0;
+		}
+	}
+	$scope.checkAll = function() {
+		var i = $scope.list.length;
+		$scope.price = 0;
+		if ($scope.checklength == i) {
+			for (; i--;) {
+				$scope.list[i].check = false;
+			}
+			$scope.checklength = 0;
+		} else {
+			for (; i--;) {
+				$scope.list[i].check = true;
+				$scope.price += $scope.list[i].cmoney - 0;
+			}
+			$scope.checklength = $scope.list.length;
+		}
+	}
+	$scope.pay = function(id) {
+		if ($scope.checklength && !$scope.paying) {
+			$scope.paying = '中';
+			var l = $scope.list.length,
+				s = new Array();
+			for (; l--;) {
+				if ($scope.list[l].check) {
+					user.info.car--;
+					s.push($scope.list[l].sid);
+				}
+			}
+			$http.post(service + 'gradeFront/createOrder?ids=' + s.join()).then(function(r) {
+				$location.url('pay/' + r.data.orderid);
+			});
+		}
+	}
+})
+
+base.controller('pay', function($scope, $http, $interval, $routeParams, fac) {
+	$scope.alipay = "http://www.zkjan.com/kstk-api/webali/pay?id=" + $routeParams.id;
+	$scope.wechat = "http://www.zkjan.com/kstk-api/webchat/pay?id=" + $routeParams.id;
+	$scope.checkStr = "检查支付状态";
+	$scope.get = function() {
+		if ($scope.check) $scope.checkStr = "正在检查…"
+		$http.post(service + "gradeFront/findOrderbyid?id=" + $routeParams.id).then(function(r) {
+			$scope.money = r.data.list[0].money;
+			$scope.no = r.data.list[0].out_trade_no;
+			$scope.status = r.data.list[0].status;
+			if ($scope.check && !$scope.status) $scope.checkStr = "尚未支付成功，重新检查"
+		});
+	}
+	$scope.get();
 })

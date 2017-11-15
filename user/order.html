@@ -1,0 +1,20 @@
+<nav></nav>
+<table ng-repeat="s in list" class="order panel">
+	<tr class="gray">
+		<th>订单编号：{{s.out_trade_no}}</th>
+		<th width="99" style="text-align: right;">{{s.time_start|limitTo:10}}</th>
+	</tr>
+	<tr ng-repeat="g in s.glist">
+		<td><a ng-href="class/{{g.id}}">{{g.name}}</a></td>
+		<td style="text-align: right;">{{g.cmoney|currency:'￥'}}</td>
+	</tr>
+	<tr>
+		<td>
+			<label class="btn" ng-click="del(s.id)" ng-if="type==0">删除订单</label>
+			<label class="btn disabled" ng-if="s.status">已支付</label>
+			<a ng-href="pay/{{s.id}}" class="btn red" ng-if="!s.status">前往支付</a>
+		</td>
+		<td style="text-align: right;"><big class="red">{{s.total_fee|currency:'￥'}}</big></td>
+	</tr>
+</table>
+<page></page>
