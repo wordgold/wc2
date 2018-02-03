@@ -601,7 +601,7 @@ base.controller('home', function($scope, $http, user, fac) {
 base.controller('scene', function($scope, $http, $attrs, $routeParams) {
 	$http.post(service + 'frontIndex/getAllFrontsceneNf').then(function(r) {
 		$scope.ylist = r.data.list;
-		$scope.year = $routeParams.year || r.data.list[0].year
+		$scope.year = $routeParams.year || 0
 		$scope.get();
 	});
 	$scope.rows = $attrs.rows || 20;
@@ -729,7 +729,7 @@ base.controller('classList', function($scope, $http, $routeParams, user) {
 	$scope.get();
 })
 
-base.controller('class', function($scope, $http, $sce, $routeParams, msg, user, event) {
+base.controller('class', function($scope, $http, $sce, $routeParams, $timeout, msg, user, event) {
 	$scope.user = user;
 	$scope.random = Math.floor(Math.random() * 9) % 3 + 1;
 	var i = document.getElementById('vd1');
@@ -789,14 +789,36 @@ base.controller('class', function($scope, $http, $sce, $routeParams, msg, user, 
 			$scope.getVideo($scope.vlist[0].flist[0])
 	});
 
+	var ct, cvp = new CloudVodPlayer(),
+		timeCheck = function() {
+			$timeout.cancel(ct);
+			ct = $timeout(timeCheck, 50000)
+			$http.post(service + "gradeFront/upVideoPro?vid=" + $scope.vid + "&current_time=" + cvp.sdk.getVideoTime() + "&total_time=" + cvp.sdk.getVideoSetting().duration)
+		}
 	$scope.getVideo = function(v, b) {
 		if (b || v.id != $scope.vid) {
 			$http.post(service + 'gradeFront/getByVId?gid=' + $scope.vlist[$scope.info.index].id + '&vid=' + v.id).then(function(r) {
 				$scope.vid = v.id;
-				$scope.video = r.data.url;
+				cvp.init({
+					uu: "j5cgl4xeks",
+					vu: r.data.vu,
+					pu: "55329a5933",
+					rate: 1000,
+					auto_play: 1,
+					gpcflag: 1,
+					width: '100%',
+					height: 200,
+					lang: "zh_CN",
+					start:r.data.current_time-0
+				}, 'vo')
+				$timeout.cancel(ct);
+				ct = $timeout(timeCheck, 50000)
 			});
 		}
 	}
+	$scope.$on("$destroy", function() {
+		$timeout.cancel(news.time);
+	});
 
 	$http.post(service + 'gradeFront/findTBygid?gid=' + $routeParams.id).then(function(r) {
 		var tname = new Array(),

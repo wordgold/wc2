@@ -1,11 +1,12 @@
 <div ng-controller="scene">
 	<div class="s_nav panel">
+		<a ng-href="picture" on="year==0">不限</a>
 		<a ng-repeat="y in ylist" ng-href="picture?year={{y.year}}" on="year==y.year">{{y.year}}</a>
 	</div>
 	<div class="panel pic_list scene flex" ng-show="list.length">
 		<label class="s_box" ng-repeat="s in list" ng-init="ls=s.slist[s.slist.length-1]" ng-click="play(s)">
 			<img ng-src="{{ls.imgurl}}">
-			<span class="h_b_s">{{year}}年-{{ls.content}}</span>
+			<span class="h_b_s">{{ls.year}}年-{{ls.content}}</span>
 			<p><i class="icon i_stime"></i>{{ls.open_time}}<br><i class="icon i_splace"></i>{{ls.place}}</p>
 		</label>
 	</div>

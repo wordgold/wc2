@@ -4,7 +4,7 @@
 </div>
 <div ng-show="vlist.length" class="class">
 	<div class="video" id="vd1">
-		<video id="vo" ng-src="{{video}}" controls preload autoplay playsinline></video>
+		<div id="vo"></div>
 		<div class="nav panel flex f_b">
 			<label ng-repeat="s in nlist" on="$parent.type==s.type" ng-click="$parent.type=s.type">{{s.name}}</label>
 		</div>

@@ -36,7 +36,7 @@
 			<p><i ng-repeat="i in plist"></i></p>
 		</div>
 		<div class="h_pic_list pic_list flex">
-			<label class="s_box" ng-repeat="p in list" ng-click="play(p)"><img ng-src="{{p.slist[p.slist.length-1].imgurl}}"><span>{{year}}年<br>{{p.slist[p.slist.length-1].content|slice:9}}</span></label>
+			<label class="s_box" ng-repeat="p in list" ng-click="play(p)" ng-init="ls=p.slist[p.slist.length-1]"><img ng-src="{{ls.imgurl}}"><span>{{ls.year}}年<br>{{ls.content|slice:9}}</span></label>
 		</div>
 	</div>
 </div>
@@ -54,9 +54,9 @@
 	</div>
 </div>
 <div class="panel">
-	<h3 class="f_b">资料下载<a href="" class="fr f_s">更多</a></h3>
+	<h3 class="f_b">资料下载<a href="download" class="fr f_s">更多</a></h3>
 	<div class="bdx list_a" ng-controller="download" data-rows="8">
-		<a ng-href="{{user.logined?s.url:user.loginURL}}" ng-repeat="s in list"><i class="icon i_download"></i>{{s.name|slice:20}}</a>
+		<a ng-href="{{s.url}}" ng-repeat="s in list"><i class="icon i_download"></i>{{s.name|slice:20}}</a>
 	</div>
 </div>
 <div class="panel" style="padding-bottom: 366px">
